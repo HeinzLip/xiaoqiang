@@ -2,7 +2,7 @@ class_name Player extends CharacterBody2D
 
 var rotation_speed := PI
 var move_speed := 500.0
-var max_health := 10
+var max_health := 1
 var current_health: float
 
 @onready var player_attacked_area := $Attacked_Area
@@ -41,13 +41,13 @@ func _physics_process(delta: float) -> void:
 	move_and_slide()
 	#print("current position ->", position, "screen_size ->", screen_size)
 	var half_screen_size = screen_size / 2
-	global_position = global_position.clamp(Vector2(-Global.move_max_width, -Global.move_max_height), Vector2(Global.move_max_width, Global.move_max_height))
+	global_position = global_position.clamp(Vector2(-Global.global_data.move_max_width, -Global.global_data.move_max_height), Vector2(Global.global_data.move_max_width, Global.global_data.move_max_height))
 	
 
-#func _reset_over() -> void:
-		#prints("reset over ->", get_tree())
-		#if get_tree() != null:
-			#get_tree().paused = false
+func _reset_over() -> void:
+		prints("reset over ->", get_tree())
+		
+		get_tree().change_scene_to_file("res://scenes/main/main.tscn")
 
 ## player接受enemy的伤害
 func apply_damage(_damage: float) -> void:
@@ -60,5 +60,11 @@ func apply_damage(_damage: float) -> void:
 		## player死亡逻辑
 		get_tree().paused = true
 		var isRest = get_tree().reload_current_scene()
-		#call_deferred("_reset_over")
+		#Global.reset_game()
+		#get_tree().current_scene.free()
 		
+		#get_tree().create_timer(1.0).timeout.connect(_reset_over)
+		#call_deferred("")
+		
+func _exit_tree() -> void:
+	prints("player free")

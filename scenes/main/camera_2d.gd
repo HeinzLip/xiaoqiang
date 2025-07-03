@@ -9,8 +9,8 @@ func _ready() -> void:
 	#prints("camera has player ->", player)
 	
 func _process(delta: float) -> void:
-	var game_width = Global.move_max_width
-	var game_height = Global.move_max_height
+	var game_width = Global.global_data.move_max_width
+	var game_height = Global.global_data.move_max_height
 	var player_position = player.global_position
 	var camera_global_position = player_position
 	var camera_size = Global.camera_size

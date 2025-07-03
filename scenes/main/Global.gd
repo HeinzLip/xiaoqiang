@@ -1,34 +1,65 @@
 extends Node2D
+var _global_data: GlobalData
+var global_data: GlobalData:
+	set(vale):
+		if _global_data == null:
+			_global_data = vale
+	get:
+		return _global_data
 
+var _camera_size = get_viewport_rect().size
+var camera_size: Vector2:
+	set(vale):
+		if _camera_size == null:
+			_camera_size = vale
+	get:
+		return _camera_size
 
-var move_max_width = 1000
-var move_max_height = 2000
+var _skill_ui: CanvasLayer
+var skill_ui: CanvasLayer:
+	set(vale):
+		if _skill_ui == null:
+			_skill_ui = vale
+	get:
+		return _skill_ui
 
-@onready var camera_size := get_viewport_rect().size
+var _weapont_system: WeaponSystem
+var weapont_system: WeaponSystem:
+	set(vale):
+		_weapont_system = vale
+	get:
+		return weapont_system
 
-var skill_ui: CanvasLayer
+var _game_size: Vector2
+var game_size: Vector2:
+	set(vale):
+		if _game_size == null:
+			_game_size = vale
+	get:
+		return _game_size
 
-var weapont_system: WeaponSystem
-
-var game_size = Vector2(move_max_width * 2, move_max_height * 2)
-
+var _player: Player
 var player: Player:
+	set(vale):
+		if _player == null:
+			_player = vale
 	get :
-		return _get_palyer()
+		return _player
 
 func _ready() -> void:
-	skill_ui = get_tree().current_scene.find_child("CanvasLayer")
-	weapont_system = get_tree().current_scene.find_child("WeaponSystem")
+	global_data = GlobalData.new()
+	skill_ui = get_tree().current_scene.get_node("CanvasLayer")
+	weapont_system = get_tree().current_scene.get_node("WeaponSystem")
+	player = get_tree().current_scene.player
+	prints("Experience Bean -> ready ->", skill_ui, weapont_system, player)
 	pass
-	
-func _get_palyer() -> Player:
-	var _player =  get_tree().current_scene.player
-	return _player
-	
+
 func show_skill_ui() -> void:
+	prints("Experience Bean -> show_skill_ui")
+	if not is_instance_valid(skill_ui):
+		skill_ui = null
+		skill_ui = get_tree().current_scene.find_child("CanvasLayer")
 	skill_ui.visible = true
 	
 func hide_skill_ui() -> void:
 	skill_ui.visible = false
-
-	
