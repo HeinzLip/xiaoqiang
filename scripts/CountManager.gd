@@ -8,4 +8,5 @@ func add_destroy_enemy() -> int:
 	return _destroyed_enemy
 	
 func get_destroyed_enemy() -> int:
+	prints("aaa")
 	return _destroyed_enemy

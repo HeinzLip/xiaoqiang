@@ -4,6 +4,8 @@ class_name ExperienceBean extends Area2D
 
 @export var experience_value: float
 
+@export var experience_move_speed: float
+
 var player: Player
 
 func set_attribute() -> void:
@@ -23,7 +25,8 @@ func _process(delta: float) -> void:
 			EEManager.recycle_bean(self)
 		else:
 			## 逐步追近player
-			global_position = global_position.lerp(player.global_position, 0.45)
+			var toPlayerDirection = global_position.direction_to(player.global_position)
+			global_position += toPlayerDirection * experience_move_speed * delta
 	pass
 
 func _update_player_experience(_experience_value: float) -> void:
