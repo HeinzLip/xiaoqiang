@@ -1,0 +1,49 @@
+[gd_scene load_steps=5 format=3 uid="uid://dg7k7yea27yi7"]
+
+[ext_resource type="Script" uid="uid://cgd3ubhcuknsp" path="res://UI/image_and_label.gd" id="1_eycxq"]
+[ext_resource type="Texture2D" uid="uid://8t5hdk6d7ju4" path="res://icon.svg" id="1_j1x7s"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_eycxq"]
+font_size = 20
+
+[sub_resource type="LabelSettings" id="LabelSettings_sam0n"]
+
+[node name="ImageAndLabel" type="PanelContainer"]
+offset_right = 100.0
+offset_bottom = 100.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource("1_eycxq")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="AspectRatioContainer" type="AspectRatioContainer" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="icon" type="TextureRect" parent="VBoxContainer/AspectRatioContainer"]
+layout_mode = 2
+size_flags_horizontal = 5
+size_flags_vertical = 3
+texture = ExtResource("1_j1x7s")
+expand_mode = 1
+
+[node name="title" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+text = "外发赛发塞"
+label_settings = SubResource("LabelSettings_eycxq")
+horizontal_alignment = 1
+
+[node name="description" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 6
+size_flags_stretch_ratio = 4.0
+text = "描述"
+label_settings = SubResource("LabelSettings_sam0n")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Button" type="Button" parent="."]
+layout_mode = 2

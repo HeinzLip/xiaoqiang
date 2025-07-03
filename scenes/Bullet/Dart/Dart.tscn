@@ -1,0 +1,19 @@
+[gd_scene load_steps=4 format=3 uid="uid://dwrbrg5jwv64n"]
+
+[ext_resource type="Script" uid="uid://0ep6rx5w3qfl" path="res://scenes/Bullet/Dart/drat.gd" id="1_0a7if"]
+[ext_resource type="Texture2D" uid="uid://8t5hdk6d7ju4" path="res://icon.svg" id="2_jjmjd"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_0a7if"]
+size = Vector2(24, 24)
+
+[node name="Dart" type="Area2D"]
+collision_layer = 4
+collision_mask = 2
+script = ExtResource("1_0a7if")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("2_jjmjd")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_0a7if")

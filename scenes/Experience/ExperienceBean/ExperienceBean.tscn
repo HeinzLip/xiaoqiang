@@ -1,0 +1,33 @@
+[gd_scene load_steps=6 format=3 uid="uid://c8sgttgllvd2p"]
+
+[ext_resource type="Script" uid="uid://bv8xwbsf7vspr" path="res://scenes/Experience/ExperienceBean/experience_bean.gd" id="1_a4d3d"]
+[ext_resource type="Texture2D" uid="uid://8t5hdk6d7ju4" path="res://icon.svg" id="1_cfmmh"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_gh1ia"]
+size = Vector2(24, 24)
+
+[sub_resource type="Animation" id="Animation_jpxme"]
+resource_name = "bean_to_player"
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_uqs8i"]
+_data = {
+&"bean_to_player": SubResource("Animation_jpxme")
+}
+
+[node name="ExperienceBean" type="Area2D"]
+script = ExtResource("1_a4d3d")
+experience_value = 10.0
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("1_cfmmh")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_gh1ia")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_uqs8i")
+}
+
+[connection signal="area_entered" from="." to="." method="_on_area_entered"]

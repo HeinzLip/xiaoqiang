@@ -1,0 +1,52 @@
+[gd_scene load_steps=7 format=3 uid="uid://dgpho084h0kmm"]
+
+[ext_resource type="PackedScene" uid="uid://c4n0rl2k2sf8e" path="res://scenes/player/Player.tscn" id="1_hyk8p"]
+[ext_resource type="Script" uid="uid://bqe83p2hkr420" path="res://scenes/main/main.gd" id="1_iuonh"]
+[ext_resource type="Script" uid="uid://cfu3tjc8gmfp6" path="res://scripts/weaponsystem/WeaponSystem.gd" id="3_k2fmo"]
+[ext_resource type="Script" uid="uid://c3k4lyveye4nv" path="res://scenes/main/camera_2d.gd" id="4_6q06x"]
+[ext_resource type="PackedScene" uid="uid://d375dghm0sqok" path="res://UI/SkillChoose.tscn" id="5_6q06x"]
+
+[sub_resource type="Curve2D" id="Curve2D_k2fmo"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, -965, -557, 0, 0, 0, 0, 958, -561, 0, 0, 0, 0, 975, 547, 0, 0, 0, 0, -978, 565)
+}
+point_count = 4
+
+[node name="Main" type="Node2D"]
+script = ExtResource("1_iuonh")
+
+[node name="WeaponSystem" type="Node2D" parent="."]
+script = ExtResource("3_k2fmo")
+metadata/_custom_type_script = "uid://cfu3tjc8gmfp6"
+
+[node name="Player" parent="." instance=ExtResource("1_hyk8p")]
+
+[node name="Camera2D" type="Camera2D" parent="."]
+script = ExtResource("4_6q06x")
+
+[node name="Path2D" type="Path2D" parent="Camera2D"]
+curve = SubResource("Curve2D_k2fmo")
+
+[node name="PathFollow2D" type="PathFollow2D" parent="Camera2D/Path2D"]
+position = Vector2(-965, -557)
+rotation = -0.00208008
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 0.3
+autostart = true
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+visible = false
+
+[node name="SkillChoose" parent="CanvasLayer" instance=ExtResource("5_6q06x")]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 0.0
+offset_bottom = 0.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[connection signal="timeout" from="Timer" to="." method="_on_enemy_spwan"]

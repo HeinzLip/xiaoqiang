@@ -1,0 +1,75 @@
+[gd_scene load_steps=12 format=3 uid="uid://c4n0rl2k2sf8e"]
+
+[ext_resource type="Script" uid="uid://biu1tp43qhung" path="res://scenes/player/player.gd" id="1_wr5hl"]
+[ext_resource type="Shader" uid="uid://b5wvq3tv2qx1w" path="res://scenes/player/attacked.gdshader" id="2_4kuee"]
+[ext_resource type="Texture2D" uid="uid://8t5hdk6d7ju4" path="res://icon.svg" id="2_gfjak"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_4kuee"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_gfjak"]
+size = Vector2(133, 121)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_524rm"]
+shader = ExtResource("2_4kuee")
+shader_parameter/ratio = 0.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_gfjak"]
+radius = 98.0816
+
+[sub_resource type="Animation" id="Animation_524rm"]
+length = 0.3
+
+[sub_resource type="Animation" id="Animation_4kuee"]
+resource_name = "attacked_anim"
+length = 0.3
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:material:shader_parameter/ratio")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.15, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [0.0, 0.4, 0.0]
+}
+
+[sub_resource type="Animation" id="Animation_tpg5x"]
+resource_name = "resume_health"
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_tpg5x"]
+_data = {
+&"RESET": SubResource("Animation_524rm"),
+&"attacked_anim": SubResource("Animation_4kuee"),
+&"resume_health": SubResource("Animation_tpg5x")
+}
+
+[node name="Player" type="CharacterBody2D"]
+script = ExtResource("1_wr5hl")
+
+[node name="Attacked_Area" type="Area2D" parent="."]
+visible = false
+scale = Vector2(4, 4)
+collision_mask = 5
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Attacked_Area"]
+shape = SubResource("RectangleShape2D_4kuee")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+visible = false
+shape = SubResource("RectangleShape2D_gfjak")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+material = SubResource("ShaderMaterial_524rm")
+texture = ExtResource("2_gfjak")
+
+[node name="Experience_Area" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Experience_Area"]
+shape = SubResource("CircleShape2D_gfjak")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_tpg5x")
+}

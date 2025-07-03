@@ -1,0 +1,28 @@
+[gd_scene load_steps=6 format=3 uid="uid://d0kyucsxxdtha"]
+
+[ext_resource type="Script" uid="uid://dwp5adymukxv3" path="res://scenes/enemy/enemy.gd" id="1_sjakr"]
+[ext_resource type="Shader" uid="uid://hknqcuyw4mnt" path="res://scenes/enemy/Enemy.gdshader" id="2_6l0n6"]
+[ext_resource type="Texture2D" uid="uid://8t5hdk6d7ju4" path="res://icon.svg" id="2_vwhkw"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_vwhkw"]
+size = Vector2(114, 114)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_s6wwv"]
+shader = ExtResource("2_6l0n6")
+
+[node name="Enemy" type="Area2D"]
+scale = Vector2(0.2, 0.2)
+collision_layer = 2
+collision_mask = 5
+script = ExtResource("1_sjakr")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-2, -4)
+shape = SubResource("RectangleShape2D_vwhkw")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+material = SubResource("ShaderMaterial_s6wwv")
+texture = ExtResource("2_vwhkw")
+
+[connection signal="area_entered" from="." to="." method="_on_area_entered"]
+[connection signal="area_exited" from="." to="." method="_on_area_exited"]
