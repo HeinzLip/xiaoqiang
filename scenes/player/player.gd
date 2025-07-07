@@ -59,7 +59,7 @@ func apply_damage(_damage: float) -> void:
 	if current_health <= 0:
 		## player死亡逻辑
 		get_tree().paused = true
-		var isRest = get_tree().reload_current_scene()
+		Global.reset_world()
 		#Global.reset_game()
 		#get_tree().current_scene.free()
 		

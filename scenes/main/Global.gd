@@ -28,7 +28,9 @@ var weapont_system: WeaponSystem:
 	set(vale):
 		_weapont_system = vale
 	get:
-		return weapont_system
+		if not is_instance_valid(_weapont_system):
+			_weapont_system = get_tree().current_scene.get_node("WeaponSystem")
+		return _weapont_system
 
 var _game_size: Vector2
 var game_size: Vector2:
@@ -44,13 +46,15 @@ var player: Player:
 		if _player == null:
 			_player = vale
 	get :
+		if not is_instance_valid(_player):
+			_player = get_tree().current_scene.get_node("Player")
 		return _player
 
 func _ready() -> void:
 	global_data = GlobalData.new()
 	skill_ui = get_tree().current_scene.get_node("CanvasLayer")
 	weapont_system = get_tree().current_scene.get_node("WeaponSystem")
-	player = get_tree().current_scene.player
+	player = get_tree().current_scene.get_node("Player")
 	prints("Experience Bean -> ready ->", skill_ui, weapont_system, player)
 	pass
 
@@ -63,3 +67,6 @@ func show_skill_ui() -> void:
 	
 func hide_skill_ui() -> void:
 	skill_ui.visible = false
+	
+func reset_world() -> void:
+	get_tree().reload_current_scene()

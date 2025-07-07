@@ -28,3 +28,8 @@ func update_skill(_skill: SkillEffect) -> void:
 func _process(delta: float) -> void:
 	var game_main = get_tree().current_scene as GameMain
 	global_position  = (game_main.player as CharacterBody2D).global_position
+
+func _exit_tree() -> void:
+	_weapons_.clear()
+	#_weapons_.is_empty()
+	prints("释放所有weapon",_weapons_.is_empty())
