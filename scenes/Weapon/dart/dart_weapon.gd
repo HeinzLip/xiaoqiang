@@ -31,10 +31,10 @@ func _ready() -> void:
 	_init_bullet()
 	
 	## test code 
-	max_fly_distance_attr.add_current_value(50)
+	#max_fly_distance_attr.add_current_value(50)
 	#dart_fire_delay_attr.add_base_ratio(-0.5)
-	dart_number_attr.add_current_value(10)
-	move_speed_attr.add_base_ratio(2.0)
+	#dart_number_attr.add_current_value(10)
+	#move_speed_attr.add_base_ratio(2.0)
 	
 		
 func _init_bullet() -> void:

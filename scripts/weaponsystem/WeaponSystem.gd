@@ -26,8 +26,7 @@ func update_skill(_skill: SkillEffect) -> void:
 	pass
 	
 func _process(delta: float) -> void:
-	var game_main = get_tree().current_scene as GameMain
-	global_position  = (game_main.player as CharacterBody2D).global_position
+	global_position  = (Global.player as CharacterBody2D).global_position
 
 func _exit_tree() -> void:
 	_weapons_.clear()

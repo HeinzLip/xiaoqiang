@@ -9,8 +9,7 @@ var is_attack_player := false
 
 func _ready() -> void:
 	current_health = max_health
-	var gameMain = get_tree().current_scene as GameMain
-	mPlayer = gameMain.player
+	mPlayer = Global.player
 	#prints("敌人准备完毕")
 	
 func _process(delta: float) -> void:
