@@ -16,8 +16,8 @@ func _ready() -> void:
 	player_experience_area.name = "player_experience_area"
 	global_position = Vector2.ZERO
 	current_health = max_health
-	if get_tree().paused:
-		get_tree().paused = false
+	#if get_tree().paused:
+		#get_tree().paused = false
 
 func _physics_process(delta: float) -> void:
 	
@@ -58,8 +58,7 @@ func apply_damage(_damage: float) -> void:
 		pass
 	if current_health <= 0:
 		## player死亡逻辑
-		get_tree().paused = true
-		Global.reset_world()
+		Global.player_dead()
 		#Global.reset_game()
 		#get_tree().current_scene.free()
 		

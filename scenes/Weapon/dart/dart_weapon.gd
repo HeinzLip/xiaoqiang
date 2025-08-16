@@ -12,13 +12,12 @@ var fire_timer: Timer
 var darts: Array[Dart]
 
 func _ready() -> void:
-	print("飞镖已经装载")
-	#var dart_number_attr = Attribute.new()
-	#dart_number_attr.base_value = 3
-	#attr_set.set("dart_number", dart_number_attr)
-	#attr_set.set("dart_fire_delay", Attribute.new())
-	#attr_set.set("move_speed", Attribute.new())
-	#attr_set.set("max_fly_distance", Attribute.new())
+	## 初始化属性
+	attr_set.attrs.set("dart_fire_delay", Attribute.new(1, "dart_fire_delay"))
+	attr_set.attrs.set("dart_number", Attribute.new(5, "dart_number"))
+	attr_set.attrs.set("max_fly_distance", Attribute.new(100, "max_fly_distancea"))
+	attr_set.attrs.set("move_speed", Attribute.new(200, "move_speed"))
+	
 	var dart_number_attr = attr_set.find_attr("dart_number")
 	var dart_fire_delay_attr = attr_set.find_attr("dart_fire_delay")
 	var move_speed_attr = attr_set.find_attr("move_speed")
@@ -27,6 +26,7 @@ func _ready() -> void:
 	dart_number_attr.value_changed.connect(_dart_number_change)
 	dart_fire_delay_attr.value_changed.connect(_dart_fire_delay_change)
 	var max_fly_distance_attr = attr_set.find_attr("max_fly_distance")
+	print("飞镖已经装载 dart_number ->", dart_number)
 	
 	_init_bullet()
 	
@@ -61,7 +61,8 @@ func _fire() -> void:
 		dart.position = Vector2.ZERO
 		var direction = Vector2.UP.rotated(rollRadin * index)
 		dart.rotation = direction.angle()
-		add_child(dart)
+		if dart.get_parent() != self:
+			add_child(dart)
 		dart.fire()
 
 func _dart_fire_delay_change(change_value: float) -> void:
@@ -105,3 +106,6 @@ func _update_bullet_obj(_update_number: float) -> void:
 func fire() -> void:
 	#print("再次发射飞镖")
 	fire_timer.start()
+	
+func _exit_tree() -> void:
+	prints("dart_waepon exit")

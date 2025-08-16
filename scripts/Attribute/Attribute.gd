@@ -9,7 +9,7 @@ enum ModifierAttrType {
 
 @export var base_value: float
 
-@export var attribute_tyep: String
+@export var attribute_type: String
 
 var current_value: float
 
@@ -19,7 +19,10 @@ var current_ratio: float
 ## 用于缓存所有属性加成后，最后需要叠加的值
 var current_additive_value: float
 
-func _init() -> void:
+
+func _init(_base_value: float, _attribute_type: String) -> void:
+	base_value = _base_value
+	_attribute_type = _attribute_type
 	current_ratio = 0.0
 	current_additive_value = 0.0
 	current_value = get_current_value()

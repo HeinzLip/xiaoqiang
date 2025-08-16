@@ -25,7 +25,7 @@ func update_skill(_skill: SkillEffect) -> void:
 		attr.add_current_value(_skill.gain_value)
 	pass
 	
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	global_position  = (Global.player as CharacterBody2D).global_position
 
 func _exit_tree() -> void:

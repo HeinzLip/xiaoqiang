@@ -2,7 +2,7 @@ class_name ExperienceBean extends Area2D
 
 @onready var bean_sprite := $Sprite2D
 
-@export var experience_value: float
+@export var experience_value: int
 
 @export var experience_move_speed: float
 
@@ -29,7 +29,7 @@ func _process(delta: float) -> void:
 			global_position += toPlayerDirection * experience_move_speed * delta
 	pass
 
-func _update_player_experience(_experience_value: float) -> void:
+func _update_player_experience(_experience_value: int) -> void:
 	prints('_update_player_experience ->', _experience_value, name)
 	if is_instance_valid(player):
 		PlayerExperienceSystem.add_player_experience(_experience_value)

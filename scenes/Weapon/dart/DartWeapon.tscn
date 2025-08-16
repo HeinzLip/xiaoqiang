@@ -1,41 +1,12 @@
-[gd_scene load_steps=9 format=3 uid="uid://cmaey5paeekux"]
+[gd_scene load_steps=5 format=3 uid="uid://cmaey5paeekux"]
 
 [ext_resource type="Script" uid="uid://cwfm8dmnk1g7b" path="res://scenes/Weapon/dart/dart_weapon.gd" id="1_211e0"]
 [ext_resource type="Script" uid="uid://du2th3dh1l07s" path="res://scripts/Attribute/Attribute.gd" id="2_76dpn"]
 [ext_resource type="Script" uid="uid://bgw6f5nkba81u" path="res://scripts/Attribute/AttributeSet.gd" id="3_fi4oe"]
 
-[sub_resource type="Resource" id="Resource_wirds"]
-script = ExtResource("2_76dpn")
-base_value = 1.0
-attribute_tyep = "dart_fire_delay"
-metadata/_custom_type_script = "uid://du2th3dh1l07s"
-
-[sub_resource type="Resource" id="Resource_fi4oe"]
-script = ExtResource("2_76dpn")
-base_value = 3.0
-attribute_tyep = "dart_number"
-metadata/_custom_type_script = "uid://du2th3dh1l07s"
-
-[sub_resource type="Resource" id="Resource_pp6nx"]
-script = ExtResource("2_76dpn")
-base_value = 100.0
-attribute_tyep = "max_fly_distance"
-metadata/_custom_type_script = "uid://du2th3dh1l07s"
-
-[sub_resource type="Resource" id="Resource_hytwp"]
-script = ExtResource("2_76dpn")
-base_value = 100.0
-attribute_tyep = "move_speed"
-metadata/_custom_type_script = "uid://du2th3dh1l07s"
-
 [sub_resource type="Resource" id="Resource_76dpn"]
 script = ExtResource("3_fi4oe")
-attrs = Dictionary[String, ExtResource("2_76dpn")]({
-"dart_fire_delay": SubResource("Resource_wirds"),
-"dart_number": SubResource("Resource_fi4oe"),
-"max_fly_distance": SubResource("Resource_pp6nx"),
-"move_speed": SubResource("Resource_hytwp")
-})
+attrs = Dictionary[String, ExtResource("2_76dpn")]({})
 metadata/_custom_type_script = "uid://bgw6f5nkba81u"
 
 [node name="DartWeapon" type="Node2D"]

@@ -33,8 +33,8 @@ func _dead() -> void:
 	## 敌人阵亡
 	var _bean = EEManager.get_bean()
 	_bean.global_position = global_position
-	get_tree().current_scene.add_child(_bean)
-	queue_free()
+	get_tree().current_scene.call_deferred("add_child", _bean)
+	call_deferred("queue_free")
 	pass
 
 func _on_area_entered(area: Area2D) -> void:

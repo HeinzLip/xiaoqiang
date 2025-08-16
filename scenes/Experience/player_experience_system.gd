@@ -1,10 +1,10 @@
 extends Node2D
 
-var current_experience_value:int = 0
+var current_experience_value:float = 0
 
 var current_level: int = 1
 
-var current_level_max_experience: int= 100
+var current_level_max_experience: float= 100
 
 func add_player_experience(_experience: float) -> void:
 	current_experience_value += _experience;
@@ -13,7 +13,7 @@ func add_player_experience(_experience: float) -> void:
 	if current_experience_value >= current_level_max_experience:
 		current_experience_value -= current_level_max_experience
 		var diff_level = current_experience_value / current_level_max_experience
-		current_experience_value = current_experience_value % current_level_max_experience
+		current_experience_value = fmod(current_experience_value, current_level_max_experience)
 		current_level += diff_level
 		prints("技能升级")
 		get_tree().paused = true
@@ -21,3 +21,8 @@ func add_player_experience(_experience: float) -> void:
 		## TODO 增加技能
 		## TODO 升级技能
 	pass
+
+func clear_by_player_dead() -> void:
+	current_experience_value = 0
+	current_level = 1
+	current_level_max_experience = 100
