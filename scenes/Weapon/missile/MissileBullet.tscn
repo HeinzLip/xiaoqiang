@@ -1,0 +1,3 @@
+[gd_scene format=3 uid="uid://dseo86yg7ry23"]
+
+[node name="MissileBullet" type="Node2D"]

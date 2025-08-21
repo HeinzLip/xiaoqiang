@@ -1,3 +1,4 @@
+## 敌人掉落的经验管理类
 class_name EnemyExperienceManager extends Node
 
 var _free_beans: Array[ExperienceBean]
