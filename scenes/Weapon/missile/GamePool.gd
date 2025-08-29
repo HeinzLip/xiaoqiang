@@ -15,6 +15,25 @@ func _create_instance():
 	add_child(inst)
 	inst.set_physics_process(false)
 	inst.visible = false
+	
+func get_object() -> Node:
+	var obj: Node
+	if _pool.size():
+		obj = _pool.pop_back()
+	else:
+		obj = _create_instance()
+	_acitve[obj.get_instance_id()] = obj
+	obj.set_physics_process(true)
+	obj.visible = true
+	return obj;
+	
+func recycle_object(obj: Node):
+	if not obj or not _acitve.has(obj.get_instance_id()):
+		return
+	obj.set_physics_process(false);
+	obj.visible = false
+	obj.reparent(self)
+	obj.global
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
