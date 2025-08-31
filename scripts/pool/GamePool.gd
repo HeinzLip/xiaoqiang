@@ -15,8 +15,8 @@ func _create_instance():
 	add_child(inst)
 	inst.set_physics_process(false)
 	inst.visible = false
-	
-func get_object() -> Node:
+
+func get_pool_object() -> Node:
 	var obj: Node
 	if _pool.size():
 		obj = _pool.pop_back()

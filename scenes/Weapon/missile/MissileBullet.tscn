@@ -1,3 +1,11 @@
-[gd_scene format=3 uid="uid://dseo86yg7ry23"]
+[gd_scene load_steps=3 format=3 uid="uid://dseo86yg7ry23"]
+
+[ext_resource type="Script" uid="uid://dt08td0m0by20" path="res://scripts/pool/GamePool.gd" id="1_2nca0"]
+[ext_resource type="Script" uid="uid://ddm07uqgpyhnb" path="res://scenes/Weapon/missile/missile_bullet.gd" id="1_54yev"]
 
 [node name="MissileBullet" type="Node2D"]
+script = ExtResource("1_54yev")
+
+[node name="MissileBulletPool" type="Node" parent="."]
+script = ExtResource("1_2nca0")
+metadata/_custom_type_script = "uid://dt08td0m0by20"

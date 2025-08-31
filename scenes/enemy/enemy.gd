@@ -44,6 +44,7 @@ func _on_area_entered(area: Area2D) -> void:
 		is_attack_player = true
 		prints("enemy begin attack player")
 	
+	## TODO 应该更新到子弹上面去对player造成伤害，而不是在player中更新伤害
 	if area.name.begins_with("player_bullet"):
 		## 敌人进入player的子弹，受到伤害
 		apply_damage(area.bullet_damage())
