@@ -7,60 +7,90 @@ enum ModifierAttrType {
 	CURRENT
 }
 
-@export var base_value: float
+## 基础属性
+var _base_value: float = 0.0
 
-@export var attribute_type: String
+## 额外属性
+var _add_value: float = 0.0
 
-var current_value: float
+## 额外属性比例
+var _ratio_value: float = 0.0
 
-## 用于缓存对与基础属性的加成比例
-var current_ratio: float
+## 当前属性比例
+var _current_ratio_value: float = 0.0
 
-## 用于缓存所有属性加成后，最后需要叠加的值
-var current_additive_value: float
+## 当前属性
+var _current_value: float = 0.0
 
+var _buffer_list: Array[AttributeBuff] = []
 
-func _init(_base_value: float, _attribute_type: String) -> void:
-	base_value = _base_value
-	_attribute_type = _attribute_type
-	current_ratio = 0.0
-	current_additive_value = 0.0
-	current_value = get_current_value()
+var _attr_type: int
 
-func add_base_ratio(new_ratio: float) -> float:
-	var base_new_ratio = abs(new_ratio)
-	var other = 1.0 - current_ratio
-	var add_diff = other * new_ratio
-	current_ratio += add_diff
-	#print("base ratio -> ", current_ratio)
-	get_current_value()
-	value_changed.emit(current_value)
-	return current_value
+func _init(type: int) -> void:
+	_attr_type = type
+	pass
 
-func add_current_value(new_value: float) -> float:
-	current_additive_value += new_value
-	current_value += new_value
-	value_changed.emit(current_value)
-	#print("修改current值，并发送信号")
-	return current_value
+## 计算当前属性
+func calu_current_value() -> void:
+	_current_value = _base_value + _add_value + _base_value * _ratio_value
+	_current_value += _current_value * _current_ratio_value
+	## TODO 计算buff的属性
+	for buff in _buffer_list:
+		_current_value += buff._buff_value
+		_current_value += _current_value * buff._buff_ratio_value
+
+## 基础属性直接叠加，不要轻易修改基础属性
+func add_base_value(value: float) -> void:
+	_base_value += value
+	calu_current_value()
+	value_changed.emit(_current_value)
+
+## 额外属性直接叠加
+func add_value(value: float) -> void:
+	_add_value += value
+	calu_current_value()
+	value_changed.emit(_current_value)
+
+## 额外属性比例叠加剩余比例的百分比
+func add_surplus_value(value: float) -> void:
+	var _formatValue = clampf(value, 0.0, 1.0)
+	_ratio_value += (1.0 - _ratio_value) * _formatValue
+	calu_current_value()
+	value_changed.emit(_current_value)
+
+## 额外属性比例直接叠加
+func add_ratio(ratio: float) -> void:
+	_ratio_value += ratio
+	calu_current_value()
+	value_changed.emit(_current_value)
+
+## 当前属性比例直接叠加
+func add_current_ratio(ratio: float) -> void:
+	_current_ratio_value += ratio
+	calu_current_value()
+	value_changed.emit(_current_value)
+
+## 增加当前属性buff
+func add_buffer(buff: AttributeBuff) -> void:
+	_buffer_list.append(buff)
+	buff.set_release_callback(_buff_release)
+	calu_current_value()
+	value_changed.emit(_current_value)
+
+func _buff_release(buff: AttributeBuff) -> void:
+	_buffer_list.erase(buff)
+	calu_current_value()
+	value_changed.emit(_current_value)
+
+func register_value_changed(_on_value_changed: Callable) -> void:
+	value_changed.connect(_on_value_changed)
+
+func unregitser_value_changed(_on_value_changed: Callable) -> void:
+	if (value_changed.is_connected(_on_value_changed)):
+		value_changed.disconnect(_on_value_changed)
+
+func get_attr_type() -> AttributeEnum.DartAttribute:
+	return _attr_type
 
 func get_current_value() -> float:
-	current_value = base_value + base_value * current_ratio + current_additive_value
-	return current_value
-
-#@export var strength_base: float
-#@export var agility_base: float
-#@export var intelligence_base: float
-#
-#var strength_current: float
-#var agility_cureent: float
-#var intelligence_current: float
-#
-#func get_strength() -> float:
-	#return strength_current
-	#
-#func get_agility() -> float:
-	#return agility_cureent
-	#
-#func get_intelligence() -> float:
-	#return intelligence_current
+	return _current_value

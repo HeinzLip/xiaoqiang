@@ -1,9 +1,9 @@
 class_name DartWeapon extends Weapon
 
 ## 飞镖的数量
-var dart_number: int
+var dart_number: int = 5
 ## 飞镖射出的间隔
-var dart_fire_delay: float
+var dart_fire_delay: float = 1.0
 
 
 # 发射器
@@ -12,20 +12,24 @@ var fire_timer: Timer
 var darts: Array[Dart]
 
 func _ready() -> void:
+	prints("AttrTools ->", AttributeEnum, SkillPool)
 	## 初始化属性
-	attr_set.attrs.set("dart_fire_delay", Attribute.new(1, "dart_fire_delay"))
-	attr_set.attrs.set("dart_number", Attribute.new(5, "dart_number"))
-	attr_set.attrs.set("max_fly_distance", Attribute.new(100, "max_fly_distancea"))
-	attr_set.attrs.set("move_speed", Attribute.new(200, "move_speed"))
+	var fire_delay_attr = Attribute.new(AttributeEnum.DartAttribute.DART_FIRE_DELAY)
+	fire_delay_attr.add_base_value(dart_fire_delay);
+	attr_set.attrs.set(AttributeEnum.get_dart_attribute_name(AttributeEnum.DartAttribute.DART_FIRE_DELAY), fire_delay_attr)
+	var dart_number_attr = Attribute.new(AttributeEnum.DartAttribute.DART_NUMBER)
+	dart_number_attr.add_base_value(dart_number);
+	attr_set.attrs.set(AttributeEnum.get_dart_attribute_name(AttributeEnum.DartAttribute.DART_NUMBER), dart_number_attr)
+	var max_fly_distance_attr = Attribute.new(AttributeEnum.DartAttribute.MAX_FLY_DISTANCE)
+	max_fly_distance_attr.add_base_value(100);
+	attr_set.attrs.set(AttributeEnum.get_dart_attribute_name(AttributeEnum.DartAttribute.MAX_FLY_DISTANCE), max_fly_distance_attr)
+	var move_speed_attr = Attribute.new(AttributeEnum.DartAttribute.MOVE_SPEED)
+	move_speed_attr.add_base_value(200);
+	attr_set.attrs.set(AttributeEnum.get_dart_attribute_name(AttributeEnum.DartAttribute.MOVE_SPEED), move_speed_attr)
 	
-	var dart_number_attr = attr_set.find_attr("dart_number")
-	var dart_fire_delay_attr = attr_set.find_attr("dart_fire_delay")
-	var move_speed_attr = attr_set.find_attr("move_speed")
-	dart_number = dart_number_attr.get_current_value()
-	dart_fire_delay = dart_fire_delay_attr.get_current_value() 
-	dart_number_attr.value_changed.connect(_dart_number_change)
-	dart_fire_delay_attr.value_changed.connect(_dart_fire_delay_change)
-	var max_fly_distance_attr = attr_set.find_attr("max_fly_distance")
+	dart_fire_delay = fire_delay_attr.get_current_value() 
+	dart_number_attr.register_value_changed(_dart_number_change)
+	fire_delay_attr.register_value_changed(_dart_fire_delay_change)
 	print("飞镖已经装载 dart_number ->", dart_number)
 	
 	_init_bullet()

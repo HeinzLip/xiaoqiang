@@ -22,6 +22,7 @@ Global="*res://scenes/main/Global.gd"
 EEManager="*res://scripts/EnemyExperienceManager.gd"
 PlayerExperienceSystem="*res://scenes/Experience/player_experience_system.gd"
 CountManager="*res://scripts/CountManager.gd"
+AttributeEnum="*res://scripts/config/attribute_enum.gd"
 
 [display]
 

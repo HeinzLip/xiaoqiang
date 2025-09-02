@@ -1,14 +1,19 @@
-[gd_scene load_steps=3 format=3 uid="uid://233gg55i7amt"]
+[gd_scene load_steps=4 format=3 uid="uid://233gg55i7amt"]
 
 [ext_resource type="Texture2D" uid="uid://brit07jap8xfa" path="res://scenes/Bullet/missile/bullet_fire.png" id="1_31pr2"]
+[ext_resource type="Script" uid="uid://cw4ndmrkhjy7q" path="res://scenes/Bullet/missile/missile.gd" id="1_f0i5k"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_f0i5k"]
-radius = 27.0
-height = 168.0
+radius = 7.00001
+height = 54.0
 
 [node name="Missile" type="Area2D"]
+collision_layer = 4
+collision_mask = 2
+script = ExtResource("1_f0i5k")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(0.3, 0.3)
 texture = ExtResource("1_31pr2")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]

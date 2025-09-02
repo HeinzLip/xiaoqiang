@@ -10,6 +10,7 @@ var is_attack_player := false
 func _ready() -> void:
 	current_health = max_health
 	mPlayer = Global.player
+	add_to_group(GroupConfig.get_instance().Enemy_Group)
 	#prints("敌人准备完毕")
 	
 func _process(delta: float) -> void:

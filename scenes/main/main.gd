@@ -18,6 +18,9 @@ func _ready() -> void:
 	var dart_weapon_class = preload("res://scenes/Weapon/dart/DartWeapon.tscn")
 	var dart_weapon_obj = dart_weapon_class.instantiate()
 	weapon_system.add_weapon("dart_weapon", dart_weapon_obj)
+	var missile_weapon_class = preload("res://scenes/Weapon/missile/MissileBullet.tscn")
+	var missile_weapon_obj = missile_weapon_class.instantiate()
+	weapon_system.add_weapon("missile_weapon", missile_weapon_obj)
 	#skill_ui.visible = false
 	
 	#var timer = Timer.new();
