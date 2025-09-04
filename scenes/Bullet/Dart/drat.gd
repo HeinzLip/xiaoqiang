@@ -12,11 +12,11 @@ var isRunning := false: set = _update_running_state
 
 func set_attribute(attr_set: AttributeSet) -> void:
 	self.attribute_set = attr_set
-	var move_speed_attr = attr_set.find_attr(AttributeEnum.get_dart_attribute_name(AttributeEnum.DartAttribute.MOVE_SPEED))
+	var move_speed_attr = attr_set.find_attr(AttributeEnum.instance.MOVE_SPEED)
 	move_speed_attr.register_value_changed(_move_speed_change)
 	move_speed = move_speed_attr.get_current_value()
 	#prints("dart bullet move speed ->", move_speed)
-	var max_fly_distance_attr = attr_set.find_attr(AttributeEnum.get_dart_attribute_name(AttributeEnum.DartAttribute.MAX_FLY_DISTANCE))
+	var max_fly_distance_attr = attr_set.find_attr(AttributeEnum.instance.MAX_FLY_DISTANCE)
 	max_fly_distance = max_fly_distance_attr.get_current_value()
 	max_fly_distance_attr.register_value_changed(_move_max_fly_distance)
 	

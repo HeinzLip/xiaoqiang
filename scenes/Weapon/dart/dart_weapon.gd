@@ -16,16 +16,16 @@ func _ready() -> void:
 	## 初始化属性
 	var fire_delay_attr = Attribute.new(AttributeEnum.DartAttribute.DART_FIRE_DELAY)
 	fire_delay_attr.add_base_value(dart_fire_delay);
-	attr_set.attrs.set(AttributeEnum.get_dart_attribute_name(AttributeEnum.DartAttribute.DART_FIRE_DELAY), fire_delay_attr)
+	attr_set.attrs.set(AttributeEnum.instance.DART_FIRE_DELAY, fire_delay_attr)
 	var dart_number_attr = Attribute.new(AttributeEnum.DartAttribute.DART_NUMBER)
 	dart_number_attr.add_base_value(dart_number);
-	attr_set.attrs.set(AttributeEnum.get_dart_attribute_name(AttributeEnum.DartAttribute.DART_NUMBER), dart_number_attr)
+	attr_set.attrs.set(AttributeEnum.instance.DART_NUMBER, dart_number_attr)
 	var max_fly_distance_attr = Attribute.new(AttributeEnum.DartAttribute.MAX_FLY_DISTANCE)
 	max_fly_distance_attr.add_base_value(100);
-	attr_set.attrs.set(AttributeEnum.get_dart_attribute_name(AttributeEnum.DartAttribute.MAX_FLY_DISTANCE), max_fly_distance_attr)
+	attr_set.attrs.set(AttributeEnum.instance.MAX_FLY_DISTANCE, max_fly_distance_attr)
 	var move_speed_attr = Attribute.new(AttributeEnum.DartAttribute.MOVE_SPEED)
 	move_speed_attr.add_base_value(200);
-	attr_set.attrs.set(AttributeEnum.get_dart_attribute_name(AttributeEnum.DartAttribute.MOVE_SPEED), move_speed_attr)
+	attr_set.attrs.set(AttributeEnum.instance.MOVE_SPEED, move_speed_attr)
 	
 	dart_fire_delay = fire_delay_attr.get_current_value() 
 	dart_number_attr.register_value_changed(_dart_number_change)

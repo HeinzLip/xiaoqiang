@@ -1,0 +1,17 @@
+[remap]
+
+importer="csv_translation"
+type="Translation"
+uid="uid://bkvsibvcoh4m0"
+
+[deps]
+
+files=["res://skill_list.skill.translation", "res://skill_list.skill.translation", "res://skill_list.attribute.translation", "res://skill_list.attribute.translation", "res://skill_list.attribute.translation", "res://skill_list.description.translation"]
+
+source_file="res://skill_list.csv"
+dest_files=["res://skill_list.skill.translation", "res://skill_list.skill.translation", "res://skill_list.attribute.translation", "res://skill_list.attribute.translation", "res://skill_list.attribute.translation", "res://skill_list.description.translation"]
+
+[params]
+
+compress=true
+delimiter=0

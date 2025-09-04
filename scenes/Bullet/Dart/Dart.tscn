@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://dwrbrg5jwv64n"]
 
 [ext_resource type="Script" uid="uid://0ep6rx5w3qfl" path="res://scenes/Bullet/Dart/drat.gd" id="1_0a7if"]
-[ext_resource type="Texture2D" uid="uid://8t5hdk6d7ju4" path="res://icon.svg" id="2_jjmjd"]
+[ext_resource type="Texture2D" uid="uid://dassy7i5kjejw" path="res://icon.svg" id="2_jjmjd"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_0a7if"]
 size = Vector2(24, 24)

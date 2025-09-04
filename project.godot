@@ -17,12 +17,12 @@ config/icon="res://icon.svg"
 
 [autoload]
 
+FileManager="*res://data/file_manager.gd"
 SkillPool="*res://scripts/Skill/skill_pool.gd"
 Global="*res://scenes/main/Global.gd"
 EEManager="*res://scripts/EnemyExperienceManager.gd"
 PlayerExperienceSystem="*res://scenes/Experience/player_experience_system.gd"
 CountManager="*res://scripts/CountManager.gd"
-AttributeEnum="*res://scripts/config/attribute_enum.gd"
 
 [display]
 

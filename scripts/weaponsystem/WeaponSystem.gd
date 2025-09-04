@@ -20,9 +20,9 @@ func update_skill(_skill: SkillEffect) -> void:
 	var weapon = _weapons_.get(_skill.weapon_type) as Weapon
 	var attr = weapon.attr_set.find_attr(_skill.attribute_type)
 	if _skill.gain_type == SkillEffect.GainType.BASE_RATIO:
-		attr.add_base_ratio(_skill.gain_value)
+		attr.add_value(_skill.gain_value)
 	else:
-		attr.add_current_value(_skill.gain_value)
+		attr.add_ratio(_skill.gain_value)
 	pass
 	
 func _process(_delta: float) -> void:

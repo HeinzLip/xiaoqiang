@@ -1,19 +1,24 @@
 extends Node2D
 
+var skill_data: Dictionary
 
+## 升级技能池
+var skill_gain_poll = [
+]
+
+
+func _ready() -> void:
+	skill_data = FileManager.get_csv_data("res://skill_list.csv")
+	skill_gain_poll = skill_data.values().map(func(x): return SkillPoint.new(x.skill_name_zh, x.description, SkillEffect.new(x.weapon_name, x.attribute_name, int(x.attribute_type), float(x.attribute_value)))) as Array[SkillPoint]
 
 var skill_pool = [
-	"dart_weapon"
+	WeaponType.get_instance().Dart_Weapon,
+	WeaponType.get_instance().Missile_Weapon
 ]
 
-var skill_gain_poll = [
-	SkillPoint.new("攻击速度","提升攻击速度",SkillEffect.new("dart_weapon", "dart_fire_delay", SkillEffect.GainType.BASE_RATIO, -0.1)),
-	SkillPoint.new("数量","提升子弹的数量",SkillEffect.new("dart_weapon", "dart_number", SkillEffect.GainType.CURRENT_VALUE, 2)),
-	SkillPoint.new("子弹移动速度","提升子弹飞行速度",SkillEffect.new("dart_weapon", "move_speed", SkillEffect.GainType.BASE_RATIO, 0.2)),
-	SkillPoint.new("子弹飞行距离","提升子弹飞行距离",SkillEffect.new("dart_weapon", "max_fly_distance", SkillEffect.GainType.BASE_RATIO, 0.1)),
-]
 
 func get_random_skills() -> Array[SkillPoint]:
+	prints("skill_gain_poll ->", skill_gain_poll)
 	var temp_skills = skill_gain_poll.duplicate()
 	temp_skills.shuffle()
 	var result: Array[SkillPoint]

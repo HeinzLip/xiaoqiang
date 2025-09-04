@@ -22,19 +22,19 @@ func _ready() -> void:
 	_create_timer()
 
 func _init_attr() -> void:
-	var bullet_fire_angle = Attribute.new(AttributeEnum.MissileAttribute.BULLER_FIRE_ANGLE)
+	var bullet_fire_angle = Attribute.new(AttributeEnum.BulletAttrbute.BULLER_FIRE_ANGLE)
 	bullet_fire_angle.add_base_value(_bullet_fire_angle)
-	attr_set.attrs.set(AttributeEnum.get_missile_attribute_name(AttributeEnum.MissileAttribute.BULLER_FIRE_ANGLE), bullet_fire_angle)
+	attr_set.attrs.set(AttributeEnum.instance.BULLER_FIRE_ANGLE, bullet_fire_angle)
 	bullet_fire_angle.register_value_changed(_on_bullet_fire_angle)
 
-	var bullet_fire_delay = Attribute.new(AttributeEnum.MissileAttribute.BULLET_FIRE_DELAY)
+	var bullet_fire_delay = Attribute.new(AttributeEnum.BulletAttrbute.BULLET_FIRE_DELAY)
 	bullet_fire_delay.add_base_value(_bullet_fire_delay)
-	attr_set.attrs.set(AttributeEnum.get_missile_attribute_name(AttributeEnum.MissileAttribute.BULLET_FIRE_DELAY), bullet_fire_delay)
+	attr_set.attrs.set(AttributeEnum.instance.BULLET_FIRE_DELAY, bullet_fire_delay)
 	bullet_fire_delay.register_value_changed(_on_bullet_fire_delay)
 
-	var bullet_fire_number = Attribute.new(AttributeEnum.MissileAttribute.BULLET_FIRE_NUMBER)
+	var bullet_fire_number = Attribute.new(AttributeEnum.BulletAttrbute.BULLET_FIRE_NUMBER)
 	bullet_fire_number.add_base_value(_bullet_fire_number)
-	attr_set.attrs.set(AttributeEnum.get_missile_attribute_name(AttributeEnum.MissileAttribute.BULLET_FIRE_NUMBER), bullet_fire_number)
+	attr_set.attrs.set(AttributeEnum.instance.BULLET_FIRE_NUMBER, bullet_fire_number)
 	bullet_fire_number.register_value_changed(_on_bullet_fire_number)
 
 	
@@ -46,7 +46,6 @@ func _create_timer():
 	_fire_timer.timeout.connect(_fire_missile_bullet)
 	
 func _fire_missile_bullet():
-	prints("MissileBullet _fire_missile_bullet -> ", _bullet_fire_angle, _bullet_fire_number)
 	var update_angle = _bullet_fire_angle / (_bullet_fire_number - 1)
 	var start_angle = -_bullet_fire_angle / 2
 	# var bullet_class = preload("res://scenes/Bullet/missile/Missile.tscn")
@@ -54,12 +53,11 @@ func _fire_missile_bullet():
 	# bullet_obj.init(attr_set, game_pool)
 	# Global.weapont_system.add_child(bullet_obj)
 	for index in range(_bullet_fire_number):
-		var bullet = game_pool.get_pool_object() as Missile
+		var bullet = game_pool.get_pool_object()
 		bullet.init(attr_set, game_pool)
 		var new_rotation = rad_to_deg(global_rotation) + start_angle + update_angle * index 
 		if _bullet_fire_number == 1:
 			new_rotation = 0;
-		prints("bullet rotation ->", rad_to_deg(global_rotation), new_rotation)
 		bullet.global_rotation = deg_to_rad(new_rotation)
 		bullet.global_position = Global.player.global_position
 		Global.weapont_system.add_child(bullet)
