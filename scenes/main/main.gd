@@ -17,12 +17,12 @@ func _ready() -> void:
 
 	FileManager.get_csv_data("res://skill_list.csv")
 	
-	var dart_weapon_class = preload("res://scenes/Weapon/dart/DartWeapon.tscn")
-	var dart_weapon_obj = dart_weapon_class.instantiate()
-	weapon_system.add_weapon(WeaponType.get_instance().Dart_Weapon, dart_weapon_obj)
-	var missile_weapon_class = preload("res://scenes/Weapon/missile/MissileBullet.tscn")
-	var missile_weapon_obj = missile_weapon_class.instantiate()
-	weapon_system.add_weapon(WeaponType.get_instance().Missile_Weapon, missile_weapon_obj)
+	# var dart_weapon_class = preload("res://scenes/Weapon/dart/DartWeapon.tscn")
+	# var dart_weapon_obj = dart_weapon_class.instantiate()
+	# weapon_system.add_weapon(WeaponType.Dart_Weapon, dart_weapon_obj)
+	# var missile_weapon_class = preload("res://scenes/Weapon/missile/MissileBullet.tscn")
+	# var missile_weapon_obj = missile_weapon_class.instantiate()
+	# weapon_system.add_weapon(WeaponType.Missile_Weapon, missile_weapon_obj)
 	#skill_ui.visible = false
 	
 	#var timer = Timer.new();
