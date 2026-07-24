@@ -1,115 +1,73 @@
 class_name DartWeapon extends Weapon
 
-## 飞镖的数量
-var dart_number: int = 5
-## 飞镖射出的间隔
-var dart_fire_delay: float = 1.0
-
-
-# 发射器
+var dart_number := 3
+var dart_fire_delay := 1.25
 var fire_timer: Timer
-
-var darts: Array[Dart]
+var darts: Array[Dart] = []
+var _universal_damage_multiplier := 1.0
+var _universal_attack_rate_multiplier := 1.0
+var _universal_count_bonus := 0
 
 func _ready() -> void:
-	prints("AttrTools ->", AttributeEnum, SkillPool)
-	## 初始化属性
-	var fire_delay_attr = Attribute.new(AttributeEnum.DartAttribute.DART_FIRE_DELAY)
-	fire_delay_attr.add_base_value(dart_fire_delay);
-	attr_set.attrs.set(AttributeEnum.instance.DART_FIRE_DELAY, fire_delay_attr)
-	var dart_number_attr = Attribute.new(AttributeEnum.DartAttribute.DART_NUMBER)
-	dart_number_attr.add_base_value(dart_number);
-	attr_set.attrs.set(AttributeEnum.instance.DART_NUMBER, dart_number_attr)
-	var max_fly_distance_attr = Attribute.new(AttributeEnum.DartAttribute.MAX_FLY_DISTANCE)
-	max_fly_distance_attr.add_base_value(100);
-	attr_set.attrs.set(AttributeEnum.instance.MAX_FLY_DISTANCE, max_fly_distance_attr)
-	var move_speed_attr = Attribute.new(AttributeEnum.DartAttribute.MOVE_SPEED)
-	move_speed_attr.add_base_value(200);
-	attr_set.attrs.set(AttributeEnum.instance.MOVE_SPEED, move_speed_attr)
-	
-	dart_fire_delay = fire_delay_attr.get_current_value() 
-	dart_number_attr.register_value_changed(_dart_number_change)
-	fire_delay_attr.register_value_changed(_dart_fire_delay_change)
-	print("飞镖已经装载 dart_number ->", dart_number)
-	
-	_init_bullet()
-	
-	## test code 
-	#max_fly_distance_attr.add_current_value(50)
-	#dart_fire_delay_attr.add_base_ratio(-0.5)
-	#dart_number_attr.add_current_value(10)
-	#move_speed_attr.add_base_ratio(2.0)
-	
-		
-func _init_bullet() -> void:
-	for index in range(dart_number):
-		var dart_bullet_class = preload("res://scenes/Bullet/Dart/Dart.tscn")
-		var dart_bullet_obj = dart_bullet_class.instantiate()
-		dart_bullet_obj.set_attribute(attr_set)
-		darts.append(dart_bullet_obj)
-	
-	## 调整飞镖的发射逻辑
+	if attr_set == null:
+		attr_set = AttributeSet.new()
+	attr_set.attrs = {}
+	_add_attribute(AttributeEnum.instance.DART_FIRE_DELAY, dart_fire_delay, _dart_fire_delay_change)
+	_add_attribute(AttributeEnum.instance.DART_NUMBER, dart_number, _dart_number_change)
+	_add_attribute(AttributeEnum.instance.MAX_FLY_DISTANCE, 240.0, func(_value: float): pass)
+	_add_attribute(AttributeEnum.instance.MOVE_SPEED, 420.0, func(_value: float): pass)
+	_update_dart_count()
 	fire_timer = Timer.new()
-	fire_timer.wait_time = dart_fire_delay
-	fire_timer.one_shot = true
 	add_child(fire_timer)
-	fire_timer.start()
 	fire_timer.timeout.connect(_fire)
-	
+	_update_fire_timer()
+	fire_timer.start()
+
+func _add_attribute(key: String, value: float, callback: Callable) -> void:
+	var attribute := Attribute.new(0)
+	attribute.add_base_value(value)
+	attribute.register_value_changed(callback)
+	attr_set.attrs[key] = attribute
+
 func _fire() -> void:
-	## 获取当前节点的forward，通过forward方向平分掉360度
-	var rollRadin = PI * 2 / dart_number
-	#prints("飞镖创建的数量 ->", dart_number, darts.size())
+	var step := TAU / float(maxi(darts.size(), 1))
 	for index in range(darts.size()):
-		var dart = darts[index]
+		var dart := darts[index]
 		dart.position = Vector2.ZERO
-		var direction = Vector2.UP.rotated(rollRadin * index)
-		dart.rotation = direction.angle()
-		if dart.get_parent() != self:
-			add_child(dart)
+		dart.rotation = Vector2.UP.rotated(step * index).angle()
 		dart.fire()
 
-func _dart_fire_delay_change(change_value: float) -> void:
-	dart_fire_delay = max(0, change_value)
-	prints("fire delay change 1->", dart_fire_delay, change_value)
-	if is_instance_valid(dart_fire_delay):
-		prints("fire delay change 2->", change_value)
-		fire_timer.wait_time = dart_fire_delay
-	
-func _dart_number_change(change_value: float) -> void:
-	_update_bullet_obj(change_value - dart_number)
-	dart_number = clamp(change_value, 0, change_value)
-	
+func _dart_fire_delay_change(value: float) -> void:
+	dart_fire_delay = maxf(value, 0.2)
+	_update_fire_timer()
 
-func _update_bullet_obj(_update_number: float) -> void:
-	var current_bullet_size = darts.size()
-	var calc_bullet_size = current_bullet_size + _update_number
-	if calc_bullet_size <=0 :
-		## TODO 清掉所有节点
-		pass
-	elif calc_bullet_size <= current_bullet_size:
-		## TODO 减少节点
-		var delete_size = current_bullet_size - calc_bullet_size
-		
-	else:
-		var add_size = calc_bullet_size - current_bullet_size
-		for index in range(add_size):
-			var new_dart: Dart
-			if darts.size() > 0:
-				new_dart = darts[0].duplicate()
-				new_dart.set_attribute(attr_set)
-			else:
-				var dart_bullet_class = preload("res://scenes/Bullet/Dart/Dart.tscn")
-				new_dart = dart_bullet_class.instantiate()
-				new_dart.set_attribute(attr_set)
-			
-			darts.append(new_dart)
-			#print("飞镖数量增加", _update_number, darts.size())
-	
+func _dart_number_change(value: float) -> void:
+	dart_number = maxi(roundi(value), 1)
+	_update_dart_count()
 
-func fire() -> void:
-	#print("再次发射飞镖")
-	fire_timer.start()
-	
-func _exit_tree() -> void:
-	prints("dart_waepon exit")
+func set_universal_modifiers(damage_multiplier: float, attack_rate_multiplier: float, count_bonus: int) -> void:
+	_universal_damage_multiplier = maxf(damage_multiplier, 0.0)
+	_universal_attack_rate_multiplier = maxf(attack_rate_multiplier, 0.1)
+	_universal_count_bonus = maxi(count_bonus, 0)
+	_update_fire_timer()
+	_update_dart_count()
+	for dart in darts:
+		dart.set_universal_damage_multiplier(_universal_damage_multiplier)
+
+func _update_fire_timer() -> void:
+	if is_instance_valid(fire_timer):
+		fire_timer.wait_time = dart_fire_delay / _universal_attack_rate_multiplier
+
+func _update_dart_count() -> void:
+	_update_bullet_obj(maxi(dart_number + _universal_count_bonus, 1) - darts.size())
+
+func _update_bullet_obj(add_count: int) -> void:
+	if add_count <= 0:
+		return
+	var dart_scene := preload("res://scenes/Bullet/Dart/Dart.tscn")
+	for index in range(add_count):
+		var dart := dart_scene.instantiate() as Dart
+		dart.set_attribute(attr_set)
+		dart.set_universal_damage_multiplier(_universal_damage_multiplier)
+		add_child(dart)
+		darts.append(dart)

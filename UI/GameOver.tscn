@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://4c7ed34dihir"]
 
 [ext_resource type="Script" uid="uid://ca5ekftgxoytq" path="res://UI/game_over.gd" id="1_kjexa"]
-[ext_resource type="Texture2D" uid="uid://8t5hdk6d7ju4" path="res://icon.svg" id="2_vjbsa"]
+[ext_resource type="Texture2D" path="res://icon.svg" id="2_vjbsa"]
 
 [node name="GameOver" type="ColorRect"]
 offset_right = 1000.0

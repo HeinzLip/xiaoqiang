@@ -1,0 +1,94 @@
+[gd_scene load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://UI/level_complete.gd" id="1_level_complete"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxResultPanel"]
+bg_color = Color(0.035, 0.071, 0.12, 0.98)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 0.76, 0.28, 0.95)
+corner_radius_top_left = 18
+corner_radius_top_right = 18
+corner_radius_bottom_right = 18
+corner_radius_bottom_left = 18
+content_margin_left = 44.0
+content_margin_top = 36.0
+content_margin_right = 44.0
+content_margin_bottom = 36.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxContinueButton"]
+bg_color = Color(0.14, 0.48, 0.34, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[node name="LevelComplete" type="ColorRect"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.01, 0.02, 0.04, 0.78)
+script = ExtResource("1_level_complete")
+
+[node name="CenterPanel" type="PanelContainer" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -330.0
+offset_top = -175.0
+offset_right = 330.0
+offset_bottom = 175.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxResultPanel")
+
+[node name="Content" type="VBoxContainer" parent="CenterPanel"]
+layout_mode = 2
+theme_override_constants/separation = 20
+alignment = 1
+
+[node name="Title" type="Label" parent="CenterPanel/Content"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.84, 0.39, 1)
+theme_override_font_sizes/font_size = 44
+text = "关卡通关！"
+horizontal_alignment = 1
+
+[node name="ResultLabel" type="Label" parent="CenterPanel/Content"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.84, 0.92, 1, 1)
+theme_override_font_sizes/font_size = 25
+horizontal_alignment = 1
+
+[node name="UnlockLabel" type="Label" parent="CenterPanel/Content"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.57, 0.94, 0.7, 1)
+theme_override_font_sizes/font_size = 20
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="Buttons" type="HBoxContainer" parent="CenterPanel/Content"]
+layout_mode = 2
+theme_override_constants/separation = 16
+alignment = 1
+
+[node name="ContinueButton" type="Button" parent="CenterPanel/Content/Buttons"]
+custom_minimum_size = Vector2(200, 50)
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+theme_override_styles/normal = SubResource("StyleBoxContinueButton")
+text = "返回关卡选择"
+
+[node name="RetryButton" type="Button" parent="CenterPanel/Content/Buttons"]
+custom_minimum_size = Vector2(150, 50)
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "再次挑战"

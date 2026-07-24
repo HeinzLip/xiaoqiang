@@ -1,12 +1,13 @@
 extends Node2D
 
-var _destroyed_enemy: int
+var _destroyed_enemy: int = 0
 
 func add_destroy_enemy() -> int:
 	_destroyed_enemy += 1
-	prints("destroy enemy number ->", _destroyed_enemy)
 	return _destroyed_enemy
 	
 func get_destroyed_enemy() -> int:
-	prints("aaa")
 	return _destroyed_enemy
+
+func clear() -> void:
+	_destroyed_enemy = 0

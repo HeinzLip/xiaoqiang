@@ -5,8 +5,8 @@ var _templete: PackedScene
 var _pool := []
 var _acitve := {}
 
-func init(templete: PackedScene, size : = 2)->void:
-	_templete = templete;
+func init(templete: PackedScene, size: int = 2) -> void:
+	_templete = templete
 	for i in size:
 		_pool.append(_create_instance())
 
@@ -26,15 +26,23 @@ func get_pool_object() -> Node:
 	_acitve[obj.get_instance_id()] = obj
 	obj.set_physics_process(true)
 	obj.visible = true
-	return obj;
+	return obj
 	
 func recycle_object(obj: Node):
 	if not obj or not _acitve.has(obj.get_instance_id()):
 		return
+	_acitve.erase(obj.get_instance_id())
 	obj.set_physics_process(false);
 	obj.visible = false
-	obj.reparent(self)
+	if obj.get_parent() != self:
+		obj.reparent(self)
 	_pool.append(obj)
+
+func get_active_objects() -> Array[Node]:
+	var active_objects: Array[Node] = []
+	for object in _acitve.values():
+		active_objects.append(object as Node)
+	return active_objects
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:

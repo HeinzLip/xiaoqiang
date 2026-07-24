@@ -1,9 +1,14 @@
 class_name Player extends CharacterBody2D
 
+signal health_changed(current: float, maximum: float)
+
 var rotation_speed := PI
-var move_speed := 500.0
-var max_health := 1
+const BASE_MOVE_SPEED := 500.0
+const BASE_MAX_HEALTH := 100.0
+var move_speed := BASE_MOVE_SPEED
+@export var max_health := BASE_MAX_HEALTH
 var current_health: float
+var _skill_move_speed_bonus := 0.0
 
 @onready var player_attacked_area := $Attacked_Area
 @onready var player_experience_area := $Experience_Area
@@ -12,12 +17,13 @@ var current_health: float
 @onready var screen_size := get_viewport_rect().size
 
 func _ready() -> void:
+	_refresh_move_speed()
+	max_health = BASE_MAX_HEALTH + CurrencyManager.get_max_health_bonus()
 	player_attacked_area.name = "player_attacked_area"
 	player_experience_area.name = "player_experience_area"
 	global_position = Vector2.ZERO
 	current_health = max_health
-	#if get_tree().paused:
-		#get_tree().paused = false
+	health_changed.emit(current_health, max_health)
 
 func _physics_process(delta: float) -> void:
 	
@@ -40,7 +46,6 @@ func _physics_process(delta: float) -> void:
 	
 	move_and_slide()
 	#print("current position ->", position, "screen_size ->", screen_size)
-	var half_screen_size = screen_size / 2
 	global_position = global_position.clamp(Vector2(-Global.global_data.move_max_width, -Global.global_data.move_max_height), Vector2(Global.global_data.move_max_width, Global.global_data.move_max_height))
 	
 
@@ -51,19 +56,21 @@ func _reset_over() -> void:
 
 ## player接受enemy的伤害
 func apply_damage(_damage: float) -> void:
-	current_health += _damage
+	current_health = clampf(current_health + _damage, 0.0, max_health)
+	health_changed.emit(current_health, max_health)
 	if _damage < 0:
 		player_attacked_anim.play("attacked_anim")
 		#prints("player player attacked anim")
 		pass
 	if current_health <= 0:
-		## player死亡逻辑
 		Global.player_dead()
-		#Global.reset_game()
-		#get_tree().current_scene.free()
-		
-		#get_tree().create_timer(1.0).timeout.connect(_reset_over)
-		#call_deferred("")
+
+func set_skill_move_speed_bonus(bonus: float) -> void:
+	_skill_move_speed_bonus = maxf(bonus, 0.0)
+	_refresh_move_speed()
+
+func _refresh_move_speed() -> void:
+	move_speed = (BASE_MOVE_SPEED + CurrencyManager.get_move_speed_bonus()) * (1.0 + _skill_move_speed_bonus)
 		
 func _exit_tree() -> void:
 	prints("player free")

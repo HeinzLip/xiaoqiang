@@ -1,4 +1,4 @@
-class_name Bullet extends Node2D
+class_name Bullet extends Area2D
 
 var bullet_name_prefix := "player_bullet"
 

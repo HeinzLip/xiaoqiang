@@ -14,5 +14,5 @@ func _restart_game() -> void:
 	Global.reset_world()
 
 func _end_game() -> void:
-	pass
+	Global.return_to_level_select()
 	

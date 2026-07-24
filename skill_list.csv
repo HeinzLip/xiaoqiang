@@ -4,7 +4,11 @@ dart,attack_speed,攻击速度,dart_fire_delay,-0.10,1,提升攻击速度
 dart,bullet_number,子弹数量,dart_number,2,1,提升子弹的数量
 dart,bullet_move_number,子弹移动速度,move_speed,0.20,4,提升子弹飞行速度
 dart,bullet_move_max_distance,子弹飞行距离,max_fly_distance,0.10,4,提升子弹飞行距离
-missile,attack_speed,攻击速度,bullet_fire_delay,0.10,3,提升攻击速度
+arc,radius,电弧半径,arc_radius,45,1,扩大电弧的攻击半径
+arc,damage_frequency,电弧频率,arc_damage_interval,-0.12,1,提高电弧造成伤害的频率
+arc,damage,电弧伤害,arc_damage,0.10,1,提升每次电弧伤害
+arc,thickness,电弧粗度,arc_thickness,8,1,增加电弧的攻击粗度
+missile,attack_speed,攻击速度,bullet_fire_delay,-0.10,1,提升攻击速度
 missile,bullet_scale,子弹尺寸,bullet_scale,0.10,4,提升子弹的尺寸
 missile,bullet_damage,子弹伤害,bullet_damage,5,1,提升子弹的伤害
 missile,buller_fire_angle,子弹发射广度,buller_fire_angle,0.10,3,提升角色发射子弹的广度
@@ -12,3 +16,8 @@ missile,bullet_move_speed,子弹移动速度,bullet_move_speed,10,1,提升子弹
 missile,bullet_penetrate_max_number,子弹穿透,bullet_penetrate_max_number,1,1,提升子弹穿透次数
 missile,bullet_life_time,子弹生命,bullet_life_time,0.10,1,提升子弹的生命周期
 missile,bullet_reflex_number,子弹反弹,bullet_reflex_number,1,1,提升子弹的反弹次数
+sound_wave,expand_speed,声波扩散速度,sound_wave_expand_speed,60,1,声波扩展速度 +1米/秒
+sound_wave,wave_count,声波数量,sound_wave_count,1,1,每次发射的声波数量 +1
+sound_wave,slow,声波减速,sound_wave_slow,0.01,1,声波命中减速效果 +1%
+sound_wave,player_speed,声波加速,sound_wave_player_speed,0.01,1,角色移动速度 +1%
+sound_wave,rebound,声波回弹,sound_wave_rebound,1,1,增加一次声波回弹：离开画面后收缩回角色

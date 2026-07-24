@@ -2,8 +2,11 @@
 
 class_name SkillEffect extends Node
 enum GainType {
+	BASE_VALUE,
+	CURRENT_VALUE,
+	BASE_SURPLUS_RATIO,
 	BASE_RATIO,
-	CURRENT_VALUE
+	CURRENT_RATIO,
 }
 
 var weapon_type: String

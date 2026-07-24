@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://dgpho084h0kmm"]
+[gd_scene load_steps=11 format=3 uid="uid://dgpho084h0kmm"]
 
 [ext_resource type="PackedScene" uid="uid://c4n0rl2k2sf8e" path="res://scenes/player/Player.tscn" id="1_hyk8p"]
 [ext_resource type="Script" uid="uid://bqe83p2hkr420" path="res://scenes/main/main.gd" id="1_iuonh"]
@@ -7,6 +7,8 @@
 [ext_resource type="PackedScene" uid="uid://d375dghm0sqok" path="res://UI/SkillChoose.tscn" id="5_6q06x"]
 [ext_resource type="Script" uid="uid://b578lpe6qdsh2" path="res://scenes/main/canvas_layer.gd" id="5_ow5a4"]
 [ext_resource type="PackedScene" uid="uid://4c7ed34dihir" path="res://UI/GameOver.tscn" id="6_hujxm"]
+[ext_resource type="PackedScene" path="res://UI/HUD.tscn" id="7_hud"]
+[ext_resource type="PackedScene" path="res://UI/LevelComplete.tscn" id="8_level_complete"]
 
 [sub_resource type="Curve2D" id="Curve2D_k2fmo"]
 _data = {
@@ -41,7 +43,21 @@ autostart = true
 visible = false
 script = ExtResource("5_ow5a4")
 
+[node name="HUD" parent="." instance=ExtResource("7_hud")]
+
 [node name="GameOver" parent="UIPanel" instance=ExtResource("6_hujxm")]
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 0.0
+offset_bottom = 0.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="LevelComplete" parent="UIPanel" instance=ExtResource("8_level_complete")]
 visible = false
 anchors_preset = 15
 anchor_right = 1.0

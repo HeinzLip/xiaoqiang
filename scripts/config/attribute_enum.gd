@@ -76,3 +76,16 @@ var BULLET_PENETRATE_MAX_NUMBER = "bullet_penetrate_max_number"
 var BULLET_REFLEX_NUMBER = "bullet_reflex_number"
 ## 子弹生命周期
 var BULLET_LIFE_TIME = "bullet_life_time"
+
+## 电弧属性
+var ARC_RADIUS = "arc_radius"
+var ARC_DAMAGE_INTERVAL = "arc_damage_interval"
+var ARC_DAMAGE = "arc_damage"
+var ARC_THICKNESS = "arc_thickness"
+
+## 声波属性
+var SOUND_WAVE_EXPAND_SPEED = "sound_wave_expand_speed"
+var SOUND_WAVE_COUNT = "sound_wave_count"
+var SOUND_WAVE_SLOW = "sound_wave_slow"
+var SOUND_WAVE_PLAYER_SPEED = "sound_wave_player_speed"
+var SOUND_WAVE_REBOUND = "sound_wave_rebound"

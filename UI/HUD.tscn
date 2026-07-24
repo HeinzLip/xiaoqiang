@@ -1,0 +1,130 @@
+[gd_scene load_steps=6 format=3]
+
+[ext_resource type="Script" path="res://UI/hud.gd" id="1_hud"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxPanel"]
+bg_color = Color(0.035, 0.071, 0.12, 0.86)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.19, 0.52, 0.72, 0.8)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+content_margin_left = 16.0
+content_margin_top = 12.0
+content_margin_right = 16.0
+content_margin_bottom = 12.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxHealth"]
+bg_color = Color(0.18, 0.07, 0.09, 0.95)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxHealthFill"]
+bg_color = Color(0.95, 0.23, 0.3, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxExperience"]
+bg_color = Color(0.05, 0.15, 0.21, 0.95)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxExperienceFill"]
+bg_color = Color(0.15, 0.78, 0.93, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[node name="HUD" type="CanvasLayer"]
+layer = 0
+script = ExtResource("1_hud")
+
+[node name="MarginContainer" type="PanelContainer" parent="."]
+offset_left = 28.0
+offset_top = 28.0
+offset_right = 390.0
+offset_bottom = 185.0
+theme_override_styles/panel = SubResource("StyleBoxPanel")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 7
+
+[node name="HealthLabel" type="Label" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.82, 0.84, 1)
+theme_override_font_sizes/font_size = 20
+text = "生命"
+
+[node name="HealthBar" type="ProgressBar" parent="MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 17)
+layout_mode = 2
+max_value = 100.0
+show_percentage = false
+theme_override_styles/background = SubResource("StyleBoxHealth")
+theme_override_styles/fill = SubResource("StyleBoxHealthFill")
+
+[node name="ExperienceLabel" type="Label" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.72, 0.94, 1, 1)
+theme_override_font_sizes/font_size = 20
+text = "等级 1   经验 0 / 60"
+
+[node name="ExperienceBar" type="ProgressBar" parent="MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 17)
+layout_mode = 2
+max_value = 100.0
+show_percentage = false
+theme_override_styles/background = SubResource("StyleBoxExperience")
+theme_override_styles/fill = SubResource("StyleBoxExperienceFill")
+
+[node name="KillLabel" type="Label" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.91, 0.94, 0.75, 1)
+theme_override_font_sizes/font_size = 18
+text = "击败  0"
+
+[node name="CoinLabel" type="Label" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.8, 0.28, 1)
+theme_override_font_sizes/font_size = 18
+text = "本局金币  0"
+
+[node name="StageInfo" type="PanelContainer" parent="."]
+offset_left = -400.0
+offset_top = 28.0
+offset_right = -28.0
+offset_bottom = 125.0
+anchor_left = 1.0
+anchor_right = 1.0
+grow_horizontal = 0
+theme_override_styles/panel = SubResource("StyleBoxPanel")
+
+[node name="Content" type="VBoxContainer" parent="StageInfo"]
+layout_mode = 2
+theme_override_constants/separation = 5
+
+[node name="StageLabel" type="Label" parent="StageInfo/Content"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.84, 0.48, 1)
+theme_override_font_sizes/font_size = 20
+text = "第一关 · 简单"
+horizontal_alignment = 1
+
+[node name="ObjectiveLabel" type="Label" parent="StageInfo/Content"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.75, 0.93, 1, 1)
+theme_override_font_sizes/font_size = 18
+text = "存活 01:15"
+horizontal_alignment = 1

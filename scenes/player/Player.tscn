@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://biu1tp43qhung" path="res://scenes/player/player.gd" id="1_wr5hl"]
 [ext_resource type="Shader" uid="uid://b5wvq3tv2qx1w" path="res://scenes/player/attacked.gdshader" id="2_4kuee"]
-[ext_resource type="Texture2D" uid="uid://8t5hdk6d7ju4" path="res://icon.svg" id="2_gfjak"]
+[ext_resource type="Texture2D" path="res://icon.svg" id="2_gfjak"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_4kuee"]
 
@@ -14,7 +14,7 @@ shader = ExtResource("2_4kuee")
 shader_parameter/ratio = 0.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_gfjak"]
-radius = 98.0816
+radius = 180.0
 
 [sub_resource type="Animation" id="Animation_524rm"]
 length = 0.3

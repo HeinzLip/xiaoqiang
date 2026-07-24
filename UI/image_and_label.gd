@@ -7,25 +7,20 @@ class_name ImageAndLabel extends PanelContainer
 var _skill: SkillPoint
 
 func _ready() -> void:
-	_button.button_down.connect(_on_button_button_down)
-	_button.button_up.connect(_on_button_button_up)
-	_button.pressed.connect(_on_button_button_press)
+	_button.pressed.connect(_on_button_pressed)
 	_button.process_mode = Node.PROCESS_MODE_ALWAYS
 
-func update_info(_skill: SkillPoint) -> void:
-	self._title.text = _skill.name
-	self._description.text = _skill.description
-	self._skill = _skill
-	
-func _on_button_button_press() -> void:
-	prints("_on_button_button_press")
-func _on_button_button_up() -> void:
-	prints("_on_button_button_up")
+func update_info(_skill_param: SkillPoint) -> void:
+	self._title.text = _skill_param.name
+	self._description.text = _skill_param.description
+	self._skill = _skill_param
+	_icon.modulate = Color("ffd34d") if _skill_param.reward_type == SkillPoint.RewardType.GOLD else Color.WHITE
+	_button.disabled = false
 
-func _on_button_button_down() -> void:
-	var title = _title.text
-	prints("选择了 %s" % title)
-	Global.weapont_system.update_skill(_skill.effect)
-	Global.hide_skill_ui()
-	get_tree().paused = false
-	pass
+func _on_button_pressed() -> void:
+	if _skill == null:
+		return
+	# Prevent a double click from applying the same reward twice while the
+	# selection panel is closing.
+	_button.disabled = true
+	PlayerExperienceSystem.apply_choice(_skill)

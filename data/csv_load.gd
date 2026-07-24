@@ -15,6 +15,8 @@ static func load_csv_file(file_path: String) -> Dictionary:
 		if line_index == 1:
 			line_index += 1
 			continue
+		if line.size() < first_line.size():
+			continue
 		var item = {}
 		for i in range(first_line.size()):
 			item[first_line[i]] = line[i]
@@ -40,11 +42,23 @@ static func load_csv_skill_list_file() -> Dictionary:
 		if line_index == 1:
 			line_index += 1
 			continue
+		# get_csv_line() returns one empty row when a CSV ends in a newline.
+		# Ignore incomplete rows before indexing them.
+		if line.size() < first_line.size():
+			continue
 		var item: SkillListItem = SkillListItem.new()
 		if not result.has(line[0]):
 			result[line[0]] = []
 		for i in range(first_line.size()):
-			item[first_line[i]] = line[i]
+			var column := first_line[i].trim_prefix("\ufeff")
+			match column:
+				"weapon_name": item.weapon_name = line[i]
+				"skill_name": item.skill_name = line[i]
+				"skill_name_zh": item.skill_name_zh = line[i]
+				"description": item.description = line[i]
+				"attribute_name": item.attribute_name = line[i]
+				"attribute_type": item.attribute_type = line[i].to_int()
+				"attribute_value": item.attribute_value = line[i].to_float()
 		result[line[0]].append(item)
 		line_index += 1
 	return result

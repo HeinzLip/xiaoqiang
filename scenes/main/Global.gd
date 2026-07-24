@@ -19,21 +19,20 @@ var camera_size: Vector2:
 
 var _ui_panel: UIPanel
 var ui_panel: UIPanel:
-    set(vale):
-        if _ui_panel == null:
-            _ui_panel = vale
+    set(value):
+        _ui_panel = value
     get:
         if not is_instance_valid(_ui_panel):
-            _ui_panel = get_tree().current_scene.get_node("UIPanel")
+            _ui_panel = _find_scene_node("UIPanel") as UIPanel
         return _ui_panel
 
 var _weapont_system: WeaponSystem
 var weapont_system: WeaponSystem:
-    set(vale):
-        _weapont_system = vale
+    set(value):
+        _weapont_system = value
     get:
         if not is_instance_valid(_weapont_system):
-            _weapont_system = get_tree().current_scene.get_node("WeaponSystem")
+            _weapont_system = _find_scene_node("WeaponSystem") as WeaponSystem
         return _weapont_system
 
 var _game_size: Vector2
@@ -46,26 +45,30 @@ var game_size: Vector2:
 
 var _player: Player
 var player: Player:
-    set(vale):
-        if _player == null:
-            _player = vale
+    set(value):
+        _player = value
     get :
         if not is_instance_valid(_player):
-            _player = get_tree().current_scene.get_node("Player")
+            _player = _find_scene_node("Player") as Player
         return _player
 
 func _ready() -> void:
     global_data = GlobalData.new()
-    ui_panel = get_tree().current_scene.get_node("UIPanel")
-    weapont_system = get_tree().current_scene.get_node("WeaponSystem")
-    player = get_tree().current_scene.get_node("Player")
-    prints("Experience Bean -> ready ->", ui_panel, weapont_system, player)
-    pass
 
-func show_skill_ui() -> void:
-    prints("Experience Bean -> show_skill_ui")
+func bind_game_scene(panel: UIPanel, weapon_system: WeaponSystem, game_player: Player) -> void:
+    ui_panel = panel
+    weapont_system = weapon_system
+    player = game_player
+
+func _find_scene_node(node_path: NodePath) -> Node:
+    var current_scene := get_tree().current_scene
+    if not is_instance_valid(current_scene):
+        return null
+    return current_scene.get_node_or_null(node_path)
+
+func show_skill_ui(skills: Array[SkillPoint] = [], title: String = "选择一项强化") -> void:
     if is_instance_valid(ui_panel):
-        ui_panel.show_ui(UIPanel.UIType.SKILL_UI)
+        ui_panel.show_skill_choices(skills, title)
     
 func hide_skill_ui() -> void:
     if is_instance_valid(ui_panel):
@@ -80,8 +83,16 @@ func hide_game_end() -> void:
     
     
 func player_dead() -> void:
+    CurrencyManager.finish_run()
     get_tree().paused = true
     show_game_end()
+
+func level_completed(level_index: int, difficulty_index: int) -> void:
+    LevelProgress.complete_level(level_index, difficulty_index)
+    CurrencyManager.finish_run()
+    get_tree().paused = true
+    if is_instance_valid(ui_panel):
+        ui_panel.show_level_complete(level_index, difficulty_index)
     
 ## 复活
 func recycle_life() -> void:
@@ -89,7 +100,14 @@ func recycle_life() -> void:
 
 ## 重置游戏
 func reset_world() -> void:
-    get_tree().reload_current_scene()
+    CurrencyManager.finish_run()
     PlayerExperienceSystem.clear_by_player_dead()
-    hide_game_end()
+    CountManager.clear()
+    WeaponManager.reset_run()
+    get_tree().reload_current_scene()
     get_tree().paused = false
+
+func return_to_level_select() -> void:
+    CurrencyManager.finish_run()
+    get_tree().paused = false
+    get_tree().change_scene_to_file("res://UI/LevelSelect.tscn")

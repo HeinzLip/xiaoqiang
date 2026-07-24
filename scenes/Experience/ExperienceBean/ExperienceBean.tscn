@@ -1,7 +1,7 @@
 [gd_scene load_steps=6 format=3 uid="uid://c8sgttgllvd2p"]
 
 [ext_resource type="Script" uid="uid://bv8xwbsf7vspr" path="res://scenes/Experience/ExperienceBean/experience_bean.gd" id="1_a4d3d"]
-[ext_resource type="Texture2D" uid="uid://8t5hdk6d7ju4" path="res://icon.svg" id="1_cfmmh"]
+[ext_resource type="Texture2D" path="res://icon.svg" id="1_cfmmh"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_gh1ia"]
 size = Vector2(24, 24)
@@ -22,6 +22,7 @@ experience_move_speed = 1000.0
 [node name="Sprite2D" type="Sprite2D" parent="."]
 scale = Vector2(0.2, 0.2)
 texture = ExtResource("1_cfmmh")
+modulate = Color(0.24, 0.94, 0.95, 1)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_gh1ia")
