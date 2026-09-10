@@ -19,6 +19,7 @@ Godot 4.6 开发的双摇杆俯视角 Roguelite 生存射击游戏（2D，1920×
 
 ```
 project.godot       引擎配置 + Autoload 注册 + WASD 输入映射
+README.md           面向 GitHub/Gitee 的项目介绍、功能模块、主要系统/类与提交记录
 skill_list.csv      技能/强化数据表（weapon_name, skill_name, skill_name_zh,
 					attribute_name, attribute_value, attribute_type, description）
 export_presets.cfg  Web 导出预设
@@ -55,6 +56,7 @@ scenes/             场景与实体（带 .tscn）
   Experience/       经验豆（ExperienceBean 池化）、player_experience_system.gd
 
 UI/                 界面（LevelSelect/SkillLab/UpgradePanel/GameOver/LevelComplete/HUD/SkillChoose）
+docs/               项目文档：skills.md、milestones.md、submission_checklist.md
 assets/             美术资源（enemies 精灵表、models 3D树、player、tiles、effects）、audio（程序化音效）
 tools/              Python 程序化生成脚本（见下）
 ```
@@ -162,6 +164,8 @@ tools/              Python 程序化生成脚本（见下）
 ## 约定与注意事项
 
 - **每次完成问题后必须更新本 AGENTS.md**：把本次改动的要点（新增文件/系统、踩坑、约定）同步到对应章节，保证上下文始终反映项目最新状态
+- `README.md` 是对外展示文档：上传 GitHub/Gitee 前保持项目介绍、核心功能、主要系统/类、运行方式和提交记录与当前项目状态一致。
+- 作业平台提交资料放在 `docs/milestones.md` 与 `docs/submission_checklist.md`；提交前确保 Milestone 区间与实际 Git 历史一致，且敏感信息检查结果仍有效。
 - **修改/新增技能后必须同步更新 `docs/skills.md`**：含基础数值、专属强化、属性 key；通用与金币奖励变化也需记录
 - 代码含较多中文注释与命名（如 `_spwan_enemy` 拼写为历史遗留，勿动）
 - 全局状态尽量走 Autoload（Global/WeaponManager/CurrencyManager 等）；场景切换时部分单例存活需手动重置（见 `Global.reset_world`）
