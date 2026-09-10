@@ -98,8 +98,8 @@
 ### M6：经济与 TTK 数值验收
 
 - 目标：根据 `BalanceConfig.TTK` 和每局 150~250 金币目标，实测三关普通怪、精英、Boss 的击杀时间与永久升级收益。
-- 涉及模块：`data/balance.gd`、`scripts/LevelProgress.gd`、`scripts/CurrencyManager.gd`、六种武器脚本与结算 UI。
-- 验收：记录至少一局每关数据；普通怪、精英和 Boss 的实测结果能解释与目标的偏差，并将最终数值集中回写到 `BalanceConfig`。
+- 涉及模块：`scripts/RunMetrics.gd`、`data/balance.gd`、`scripts/LevelProgress.gd`、`scripts/CurrencyManager.gd`、敌人脚本和通关/失败结算 UI。
+- 验收：结算页能显示非暂停战斗时间、实际伤害、平均 DPS、各类型 TTK 和带出金币；将三关结果填写进 `docs/balance_validation.md` 后，再把最终参数集中回写到 `BalanceConfig`。
 
 ### M7：地图障碍与走位空间恢复
 

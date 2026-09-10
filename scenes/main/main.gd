@@ -33,6 +33,10 @@ func _ready() -> void:
 	_level_index = LevelProgress.selected_level_index
 	_difficulty_index = LevelProgress.selected_difficulty_index
 	_level_config = LevelProgress.get_selected_level_config()
+	RunMetrics.begin_run(
+		LevelProgress.get_level_name(_level_index),
+		LevelProgress.get_difficulty_name(_difficulty_index),
+	)
 	# 瓦片地图暂下掉
 	_configure_current_wave_timer()
 	hud.configure_stage(

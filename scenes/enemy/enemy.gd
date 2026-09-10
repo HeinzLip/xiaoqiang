@@ -116,6 +116,7 @@ func _ready() -> void:
 	current_health = max_health
 	mPlayer = Global.player
 	add_to_group(GroupConfig.get_instance().Enemy_Group)
+	RunMetrics.register_enemy(self)
 	_apply_visual_resource()
 	if is_boss:
 		scale = Vector2.ONE * 0.70
@@ -281,7 +282,9 @@ func _reset_legacy_walk_animation() -> void:
 func apply_damage(damage: float) -> void:
 	if _is_dead:
 		return
+	var health_before := current_health
 	current_health = clampf(current_health + damage, 0.0, max_health)
+	RunMetrics.record_damage(self, maxf(health_before - current_health, 0.0))
 	_update_elite_health_bar()
 	if current_health <= 0.0:
 		CountManager.add_destroy_enemy()
@@ -319,6 +322,7 @@ func _update_elite_health_bar() -> void:
 
 func _dead() -> void:
 	_is_dead = true
+	RunMetrics.record_defeat(self)
 	elite_health_bar.hide()
 	_active_animation_row = -1
 	_active_animation_elapsed = 0.0

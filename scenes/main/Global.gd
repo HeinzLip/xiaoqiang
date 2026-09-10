@@ -77,12 +77,16 @@ func hide_skill_ui() -> void:
 func show_game_end() -> void:
     if is_instance_valid(ui_panel):
         ui_panel.show_ui(UIPanel.UIType.GAME_END_UI)
+        var game_over := ui_panel.cur_ui_node as GameOver
+        if game_over != null:
+            game_over.configure()
 func hide_game_end() -> void:
     if is_instance_valid(ui_panel):
         ui_panel.hide_ui()
     
     
 func player_dead() -> void:
+    RunMetrics.finish_run(CurrencyManager.run_gold)
     CurrencyManager.finish_run()
     AudioManager.stop_battle_bgm()
     get_tree().paused = true
@@ -90,6 +94,7 @@ func player_dead() -> void:
 
 func level_completed(level_index: int, difficulty_index: int) -> void:
     LevelProgress.complete_level(level_index, difficulty_index)
+    RunMetrics.finish_run(CurrencyManager.run_gold)
     CurrencyManager.finish_run()
     AudioManager.stop_battle_bgm()
     get_tree().paused = true

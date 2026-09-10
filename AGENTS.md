@@ -72,6 +72,11 @@ tools/              Python 程序化生成脚本（见下）
 
 ## 核心系统
 
+### 数值验收（scripts/RunMetrics.gd + docs/balance_validation.md）
+- `RunMetrics`（Autoload）只在 `main.tscn` 正式关卡记录数据：用非暂停战斗时间计算敌人**第一次受到有效伤害到死亡**的 TTK，统计实际有效伤害、击败数、局内等级和带出金币。不要在技能体验场或怪物试炼场调用 `begin_run`。
+- 敌人必须在 `_ready` 调用 `RunMetrics.register_enemy(self)`，在 `apply_damage` 记录实际扣血量、在 `_dead` 记录 TTK；结算前由 `Global` 先调用 `finish_run(CurrencyManager.run_gold)`，再结转金币。
+- 通关和失败界面都展示 `RunMetrics.get_report_text()`；三关实测数据填写到 `docs/balance_validation.md`，数值调整只能集中修改 `data/balance.gd`。
+
 ### 属性 Buff（scripts/Attribute/）
 - `AttributeBuff` 是临时固定值/比例效果：`Attribute.add_buffer()` 会注册回调并立即启动；其 Timer 挂到 SceneTree 根节点且使用 `PROCESS_MODE_PAUSABLE`，因此技能选择和结算暂停期间不消耗 Buff 时间。
 - `Attribute.calu_current_value()` 每次从基础值重新计算，顺序为基础/额外值 -> 基础比例 -> 当前比例 -> 仍生效的 Buff，禁止在旧 `_current_value` 上重复乘倍率；Buff 过期后仅触发一次回调并从属性列表移除。
@@ -140,6 +145,7 @@ tools/              Python 程序化生成脚本（见下）
 - **TTK 锚点**：普通怪 3s / 精英 10s / Boss 75s；`PLAYER_MID_DPS = 10`（5 槽满 + 轻度强化）；敌人 HP = TTK × DPS 推导（`ENEMY_HP_BY_LEVEL=[30,40,55]`、`BOSS_HP_BY_LEVEL=[750,1050,1400]`、精英 ×5）。**敌人原型** `ENEMY_ARCHETYPE`（fast/tank/ranged 数值修正）与远程攻击参数（`RANGED_ATTACK_*`）也在本文件。
 - **统一伤害管道**：`最终伤害 = base × (1+火力×0.12) × (1+通用伤害×0.10) × (1+Σ专属比例)`——所有武器伤害计算遵守同一乘法顺序。
 - **分阶段路线图（当前状态）**：Phase1 ✅ 建 BalanceConfig + 迁移无行为变化的消费方（CurrencyManager 成本/每级值、XP 曲线、player 基础属性）；Phase2 ✅ 六武器基础伤害迁入 `WEAPON_BASE` 表（`dart_weapon`/`drat`/`missile_bullet`/`missile`/`arc_weapon`/`sound_wave_weapon`/`ice_spike_weapon`/`lightning_strike_weapon`），武器侧常量统一读 BalanceConfig；Phase3 ✅ 敌人血量校准（**方案 A 保持量级**）——`LevelProgress` 各关普通怪统一 `ENEMY_HP_BY_LEVEL[30,40,55]`、Boss `BOSS_HP_BY_LEVEL[750,1050,1400]`（精英自动 ×5），波次内血量差异改为靠密度/敌人类型体现；Phase4 ⏳ 经济对齐（目标每局 1~2 次永久升级）；Phase5 ⏳ 实机 TTK 验收。
+- **验收工作流**：R2 已新增 `RunMetrics` 与 `docs/balance_validation.md`。先用正式关卡的结算报告记录三关数据，再修改 `BalanceConfig`；禁止在没有实测结果时凭感觉改敌人 HP、武器基础伤害或经济目标。
 
 ## 美术资源规范
 

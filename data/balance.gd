@@ -4,8 +4,8 @@ class_name BalanceConfig
 ## ------------------------------------------------------------
 ## 原则: 所有平衡数值只在这里定义, 消费方从这里读取, 改数值 = 改这一个文件。
 ## 锚点: 用"击杀时间 TTK"反推敌人血量, 用"统一伤害管道"规整所有伤害来源。
-## 分阶段: Phase1 建本文件+迁移无行为变化的消费方(已完成) / Phase2 武器脚本迁移到
-##         管道公式 / Phase3 敌人血量校准(需 HP 走向决策) / Phase4 经济对齐 / Phase5 实机验收
+## 分阶段: Phase1 单一数据源、Phase2 武器伤害迁移、Phase3 敌人血量校准均已完成。
+##         当前进行 Phase4 经济对齐与 Phase5 实机验收；结果记录在 docs/balance_validation.md。
 ## ============================================================
 
 ## ---------- 一、TTK 锚点 (击杀时间, 秒) ----------
@@ -19,7 +19,7 @@ const TTK := {
 const PLAYER_MID_DPS := 10.0
 
 ## ---------- 三、敌人血量 (由 TTK x PLAYER_MID_DPS 推导) ----------
-## 普通怪 HP: 各关依次略增 (Phase 3 校准目标; 迁移前 LevelProgress 仍用旧值 28~192)
+## 普通怪 HP: 各关依次略增；原型怪再应用 ENEMY_ARCHETYPE 的血量倍率。
 const ENEMY_HP_BY_LEVEL := [30.0, 40.0, 55.0]
 const ELITE_HP_MULTIPLIER := 5.0
 ## Boss HP (TTK 75s, 逐关递增)
@@ -54,8 +54,8 @@ const UPGRADE_COST := {
 ## 目标: 每局 1~2 次永久升级 → 期望局收入 150~250 金币
 const ECONOMY_TARGET_RUN_GOLD := 200
 
-## ---------- 九、武器基础伤害 (当前刻度, Phase 2 迁移目标) ----------
-## 迁移前各武器脚本内仍保留各自 base 常量, 迁移后统一从本表读取
+## ---------- 九、武器基础伤害（统一刻度） ----------
+## 六种武器都从本表读取基础伤害，专属强化与通用强化在此基础上叠加。
 const WEAPON_BASE := {
 	"missile_damage": 1.5,        # 子弹单发
 	"dart_damage": 0.8,           # 飞镖旋转 (飞行 = x0.625)
@@ -82,4 +82,3 @@ const RANGED_ATTACK_RANGE := 380.0     # 进入该距离后停步开火
 const RANGED_ATTACK_INTERVAL := 1.8    # 射击间隔 (秒)
 const RANGED_PROJECTILE_SPEED := 260.0 # 弹体飞行速度
 const RANGED_PROJECTILE_LIFETIME := 3.0
-

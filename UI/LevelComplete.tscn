@@ -43,9 +43,9 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -330.0
-offset_top = -175.0
+offset_top = -220.0
 offset_right = 330.0
-offset_bottom = 175.0
+offset_bottom = 220.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxResultPanel")
@@ -72,6 +72,13 @@ horizontal_alignment = 1
 layout_mode = 2
 theme_override_colors/font_color = Color(0.57, 0.94, 0.7, 1)
 theme_override_font_sizes/font_size = 20
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="MetricsLabel" type="Label" parent="CenterPanel/Content"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.72, 0.86, 0.98, 1)
+theme_override_font_sizes/font_size = 17
 horizontal_alignment = 1
 autowrap_mode = 2
 

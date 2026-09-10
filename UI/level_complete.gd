@@ -2,6 +2,7 @@ class_name LevelComplete extends ColorRect
 
 @onready var result_label: Label = $CenterPanel/Content/ResultLabel
 @onready var unlock_label: Label = $CenterPanel/Content/UnlockLabel
+@onready var metrics_label: Label = $CenterPanel/Content/MetricsLabel
 @onready var continue_button: Button = $CenterPanel/Content/Buttons/ContinueButton
 @onready var retry_button: Button = $CenterPanel/Content/Buttons/RetryButton
 
@@ -19,6 +20,7 @@ func configure(level_index: int, difficulty_index: int) -> void:
 		_get_unlock_message(level_index, difficulty_index),
 		CurrencyManager.last_carried_gold,
 	]
+	metrics_label.text = RunMetrics.get_report_text()
 
 func _get_unlock_message(level_index: int, difficulty_index: int) -> String:
 	if difficulty_index < LevelProgress.DIFFICULTIES.size() - 1:

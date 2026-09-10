@@ -30,6 +30,7 @@ Godot 4.6 开发的 2D 双摇杆俯视角 Roguelite 生存射击游戏。玩家�
 - 对象池：经验豆等可复用对象减少频繁创建释放。
 - 程序化音效系统：武器发射、命中、电弧、声波、冰刺、落雷等。
 - 每局战斗会播放独立的循环背景音乐，通关、失败或离开正式战斗场景时淡出停止。
+- 正式关卡结算会展示 TTK、平均 DPS 和金币收益，便于根据实测结果调整 `BalanceConfig`。
 - 数值平衡集中管理：`BalanceConfig` 作为 TTK、血量、经济、武器基础伤害的单一入口。
 
 ## 武器系统
@@ -146,6 +147,7 @@ godot4 -e
 
 - Milestone 划分建议：`docs/milestones.md`
 - 提交前检查清单：`docs/submission_checklist.md`
+- 数值平衡验收：`docs/balance_validation.md`
 - 技能与强化说明：`docs/skills.md`
 
 ## 提交记录
