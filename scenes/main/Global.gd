@@ -84,12 +84,14 @@ func hide_game_end() -> void:
     
 func player_dead() -> void:
     CurrencyManager.finish_run()
+    AudioManager.stop_battle_bgm()
     get_tree().paused = true
     show_game_end()
 
 func level_completed(level_index: int, difficulty_index: int) -> void:
     LevelProgress.complete_level(level_index, difficulty_index)
     CurrencyManager.finish_run()
+    AudioManager.stop_battle_bgm()
     get_tree().paused = true
     if is_instance_valid(ui_panel):
         ui_panel.show_level_complete(level_index, difficulty_index)

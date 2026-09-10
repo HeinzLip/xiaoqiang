@@ -2,6 +2,8 @@
 
 本文档用于作业平台的 Milestone 填写。区间按当前 Git 历史从早到晚划分，保持连续、真实的开发过程，不重写提交历史。
 
+> 注意：下文“后续开发 Milestone”是当前仓库的实施路线图，不是可立即填写到作业平台的历史 Milestone。只有功能完成、完成验收并产生真实 commit 后，才能将对应的提交区间和设计备注填入平台。
+
 ## Milestone 1：项目基础与全局运行框架
 
 - Commit 区间：`47f3125` ~ `bc33d50`
@@ -85,3 +87,40 @@
 - 不建议为了平台检查重写历史，当前历史已经能体现从项目初始化、系统搭建、武器扩展到内容完善的过程。
 - 如果平台要求每个 Milestone 必须选择已有 commit，先提交本次文档整理，再将 Milestone 4 终点选为该提交。
 
+## 后续开发 Milestone（实施中）
+
+### M5：属性 Buff 生命周期与叠加规则
+
+- 目标：让临时属性效果拥有可验证的开始、暂停、过期和移除流程，避免倍率在多次重算后重复叠加。
+- 涉及模块：`scripts/Attribute/Attribute.gd`、`scripts/Attribute/AttributeBuff.gd`、技能奖励和武器属性消费方。
+- 验收：给同一属性施加固定值与比例 Buff；技能选择暂停期间剩余时间不变化；恢复战斗后到时自动移除并触发一次 `value_changed`。
+
+### M6：经济与 TTK 数值验收
+
+- 目标：根据 `BalanceConfig.TTK` 和每局 150~250 金币目标，实测三关普通怪、精英、Boss 的击杀时间与永久升级收益。
+- 涉及模块：`data/balance.gd`、`scripts/LevelProgress.gd`、`scripts/CurrencyManager.gd`、六种武器脚本与结算 UI。
+- 验收：记录至少一局每关数据；普通怪、精英和 Boss 的实测结果能解释与目标的偏差，并将最终数值集中回写到 `BalanceConfig`。
+
+### M7：地图障碍与走位空间恢复
+
+- 目标：恢复程序化瓦片、树木碰撞和安全出生区，让走位、地形和敌群构成可感知的生存决策。
+- 涉及模块：`scenes/main/level_tile_map.gd`、`scenes/main/main.gd`、地图 TileSet 与玩家活动边界。
+- 验收：三关均可正常出生；玩家被水域、山体和树木阻挡但敌人仍可追击；不会出现无法离开的出生区或树木重叠。
+
+### M8：远程敌人攻击表现统一
+
+- 目标：为缺少攻击行动画的远程怪补齐 5 行精灵表，并让开火预警、弹体生成和攻击动画在各敌人原型上保持一致。
+- 涉及模块：`assets/enemies/`、`tools/rebuild_enemy_standard_sheets.py`、`scenes/enemy/enemy.gd`、`scripts/LevelProgress.gd`。
+- 验收：骷髅和外星远程敌人都在停止移动后播放攻击动作，弹体伤害、射程和冷却符合 `BalanceConfig` 定义。
+
+### M9：设置、结算数据与音频体验
+
+- 目标：提供 BGM/音效音量与静音设置，并在结算页展示存活时间、击杀数、等级、金币和武器构筑摘要。
+- 涉及模块：`scripts/AudioManager.gd`、`scripts/CurrencyManager.gd`、`scripts/CountManager.gd`、HUD、结算 UI 与 `user://` 存档。
+- 验收：设置重启后仍生效；每局战斗 BGM 正确淡入淡出；通关和失败页的数据与本局实际行为一致。
+
+### M10：回归验证与自动化覆盖
+
+- 目标：为奖励生成、单局重置、存档读写、对象池复用和武器解锁建立可重复执行的验证入口，降低后续改动回归风险。
+- 涉及模块：测试框架或 Godot 场景验收脚本、`SkillService`、`WeaponManager`、`CurrencyManager`、`EnemyExperienceManager`。
+- 验收：每项核心流程有明确断言或可重放操作步骤；失败时能定位到具体系统，而不是只依赖完整手动通关。

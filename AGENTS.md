@@ -7,6 +7,7 @@ Godot 4.6 开发的双摇杆俯视角 Roguelite 生存射击游戏（2D，1920×
 - **启动编辑器**：`godot4 -e`（当前机器未装 CLI，通常直接打开 Godot 编辑器导入项目）
 - **无测试框架**：项目无自动化测试、无 lint/typecheck 命令。验证改动 = 编辑器运行 + 手动 Play
 - **程序化生成美术**（Python3 + Pillow）：见 `tools/`，运行时用 `python3 tools/<script>.py`
+- **编辑器 Git 集成**：仓库已移除旧 Godot GitPlugin 插件；`project.godot` 不应再配置 `GitPlugin`，版本控制使用外部 Git 命令即可。
 - **技能表**：`docs/skills.md` 汇总全部技能与专属强化（数值/机制/属性key），**新增或修改技能后必须同步更新**
 
 ## 技术栈
@@ -64,11 +65,16 @@ tools/              Python 程序化生成脚本（见下）
 ## 音效系统
 
 - `AudioManager`（Autoload）：预加载 `assets/audio/*.wav`，用 8 个池化 `AudioStreamPlayer` 叠播同类音效（不打断已播音效）；各 `play_*` 便捷函数均可传入可选的 `volume_db`
+- **战斗 BGM**：`assets/audio/battle_loop.wav` 由 `tools/generate_battle_bgm.py` 生成，`AudioManager` 用独立播放器循环播放（-18 dB），不占用武器音效池。`main.gd _ready` 开始新局时淡入；玩家死亡、通关结算或离开主战斗场景时由 `Global`/`main.gd` 淡出并停止，下一局从循环起点重新开始。
 - 武器音效由 `tools/generate_weapon_sfx.py` 程序化合成（numpy 生成 WAV）：missile_fire/hit、dart_fire/hit、arc、sound_wave、ice_spike、lightning
 - 接入点：武器发射函数（`_fire*`）+ 子弹命中（`_try_hit_enemy`/`_deal_arc_damage`）。电弧音效有 0.25s 节流避免爆响
 - 新增音效：生成 WAV 后加 `_load_stream` + 便捷方法，再在触发点调用；PNG/WAV 需 Godot 重新导入
 
 ## 核心系统
+
+### 属性 Buff（scripts/Attribute/）
+- `AttributeBuff` 是临时固定值/比例效果：`Attribute.add_buffer()` 会注册回调并立即启动；其 Timer 挂到 SceneTree 根节点且使用 `PROCESS_MODE_PAUSABLE`，因此技能选择和结算暂停期间不消耗 Buff 时间。
+- `Attribute.calu_current_value()` 每次从基础值重新计算，顺序为基础/额外值 -> 基础比例 -> 当前比例 -> 仍生效的 Buff，禁止在旧 `_current_value` 上重复乘倍率；Buff 过期后仅触发一次回调并从属性列表移除。
 
 ### 地图系统（scenes/main/level_tile_map.gd + assets/tiles/）
 - **瓦片地图已下掉（暂用）**：`level_tile_map._ready` 与 `main.gd` 中 `configure`/`_place_trees` 调用均已停用，地图不生成瓦片与树

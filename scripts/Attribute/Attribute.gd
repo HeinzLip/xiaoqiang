@@ -32,12 +32,14 @@ func _init(type: int) -> void:
 
 ## 计算当前属性
 func calu_current_value() -> void:
-	_current_value = _base_value + _add_value + _base_value * _ratio_value
-	_current_value += _current_value * _current_ratio_value
-	## TODO 计算buff的属性
+	var calculated_value := _base_value + _add_value + _base_value * _ratio_value
+	calculated_value += calculated_value * _current_ratio_value
 	for buff in _buffer_list:
-		_current_value += buff._buff_value
-		_current_value += _current_value * buff._buff_ratio_value
+		if not buff.is_live():
+			continue
+		calculated_value += buff._buff_value
+		calculated_value += calculated_value * buff._buff_ratio_value
+	_current_value = calculated_value
 
 ## 基础属性直接叠加，不要轻易修改基础属性
 func add_base_value(value: float) -> void:
@@ -72,8 +74,11 @@ func add_current_ratio(ratio: float) -> void:
 
 ## 增加当前属性buff
 func add_buffer(buff: AttributeBuff) -> void:
+	if buff == null or _buffer_list.has(buff):
+		return
 	_buffer_list.append(buff)
 	buff.set_release_callback(_buff_release)
+	buff.start()
 	calu_current_value()
 	value_changed.emit(_current_value)
 

@@ -7,6 +7,7 @@
 
 # Local tool / assistant workspace metadata
 .dsh/
+__pycache__/
 
 # Godot 4+ specific ignores
 .godot/

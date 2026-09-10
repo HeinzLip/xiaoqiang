@@ -25,6 +25,7 @@ var _waiting_for_wave_elite := false
 
 func _ready() -> void:
 	randomize()
+	AudioManager.play_battle_bgm()
 	Global.bind_game_scene($UIPanel, $WeaponSystem, $Player)
 	CurrencyManager.begin_run()
 	if not LevelProgress.has_selected_level():
@@ -45,6 +46,9 @@ func _ready() -> void:
 	# WeaponManager is an autoload and survives a scene reload, so each run
 	# explicitly asks it to attach the starter weapon to this new scene.
 	WeaponManager.call_deferred("add_starter_weapon")
+
+func _exit_tree() -> void:
+	AudioManager.stop_battle_bgm()
 
 func _spwan_enemy() -> void:
 	if _level_completed or _boss_spawned or _waiting_for_wave_elite:
