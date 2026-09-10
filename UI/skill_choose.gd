@@ -7,7 +7,7 @@ func _ready() -> void:
 	skill_uis.append($VBoxContianer/HBoxContainer/ImageAndLabel4)
 	skill_uis.append($VBoxContianer/HBoxContainer/ImageAndLabel)
 
-func configure(skills: Array[SkillPoint], title: String) -> void:
+func configure(skills: Array[RewardOption], title: String) -> void:
 	$VBoxContianer/Label.text = title
 	for index in range(skill_uis.size()):
 		var card := skill_uis[index]
@@ -16,3 +16,4 @@ func configure(skills: Array[SkillPoint], title: String) -> void:
 			card.update_info(skills[index])
 		else:
 			card.visible = false
+			card.clear_info()

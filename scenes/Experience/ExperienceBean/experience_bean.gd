@@ -26,5 +26,5 @@ func _process(delta: float) -> void:
 	global_position += global_position.direction_to(player.global_position) * experience_move_speed * delta
 
 func _on_area_entered(area: Area2D) -> void:
-	if area.name == "player_experience_area":
+	if area.is_in_group(GroupConfig.get_instance().Player_Experience_Area_Group):
 		player = area.get_parent() as Player

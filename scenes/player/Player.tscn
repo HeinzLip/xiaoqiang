@@ -1,49 +1,76 @@
-[gd_scene load_steps=12 format=3 uid="uid://c4n0rl2k2sf8e"]
+[gd_scene load_steps=14 format=3 uid="uid://c4n0rl2k2sf8e"]
 
 [ext_resource type="Script" uid="uid://biu1tp43qhung" path="res://scenes/player/player.gd" id="1_wr5hl"]
-[ext_resource type="Shader" uid="uid://b5wvq3tv2qx1w" path="res://scenes/player/attacked.gdshader" id="2_4kuee"]
-[ext_resource type="Texture2D" path="res://icon.svg" id="2_gfjak"]
+[ext_resource type="Script" path="res://scenes/player/player_visual.gd" id="2_player_visual"]
+[ext_resource type="Texture2D" path="res://assets/player/hero_cartoon_idle.png" id="3_idle"]
+[ext_resource type="Texture2D" path="res://assets/player/hero_cartoon_walk_front_a.png" id="4_walk_a"]
+[ext_resource type="Texture2D" path="res://assets/player/hero_cartoon_walk_front_b.png" id="5_walk_b"]
+[ext_resource type="Texture2D" path="res://assets/player/hero_cartoon_hurt.png" id="6_hurt"]
+[ext_resource type="Texture2D" path="res://assets/player/hero_cartoon_side_left_a.png" id="7_side_a"]
+[ext_resource type="Texture2D" path="res://assets/player/hero_cartoon_side_left_b.png" id="8_side_b"]
+[ext_resource type="Texture2D" path="res://assets/player/hero_cartoon_side_left_c.png" id="9_side_c"]
+[ext_resource type="Texture2D" path="res://assets/player/hero_cartoon_side_left_d.png" id="10_side_d"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_4kuee"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_gfjak"]
 size = Vector2(133, 121)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_524rm"]
-shader = ExtResource("2_4kuee")
-shader_parameter/ratio = 0.0
-
 [sub_resource type="CircleShape2D" id="CircleShape2D_gfjak"]
 radius = 180.0
 
-[sub_resource type="Animation" id="Animation_524rm"]
-length = 0.3
-
-[sub_resource type="Animation" id="Animation_4kuee"]
-resource_name = "attacked_anim"
-length = 0.3
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite2D:material:shader_parameter/ratio")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.15, 0.3),
-"transitions": PackedFloat32Array(1, 1, 1),
-"update": 0,
-"values": [0.0, 0.4, 0.0]
-}
-
-[sub_resource type="Animation" id="Animation_tpg5x"]
-resource_name = "resume_health"
-
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_tpg5x"]
-_data = {
-&"RESET": SubResource("Animation_524rm"),
-&"attacked_anim": SubResource("Animation_4kuee"),
-&"resume_health": SubResource("Animation_tpg5x")
-}
+[sub_resource type="SpriteFrames" id="SpriteFrames_player"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3_idle")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 4.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("4_walk_a")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_idle")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_walk_b")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_idle")
+}],
+"loop": true,
+"name": &"walk_front",
+"speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("7_side_a")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_side_b")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_side_c")
+}, {
+"duration": 1.0,
+"texture": ExtResource("10_side_d")
+}],
+"loop": true,
+"name": &"walk_side",
+"speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("6_hurt")
+}],
+"loop": false,
+"name": &"hurt",
+"speed": 5.0
+}]
 
 [node name="Player" type="CharacterBody2D"]
 script = ExtResource("1_wr5hl")
@@ -58,16 +85,14 @@ shape = SubResource("RectangleShape2D_4kuee")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_gfjak")
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
-material = SubResource("ShaderMaterial_524rm")
-texture = ExtResource("2_gfjak")
+[node name="PlayerVisual" type="AnimatedSprite2D" parent="."]
+position = Vector2(0, -4)
+scale = Vector2(0.38, 0.38)
+sprite_frames = SubResource("SpriteFrames_player")
+animation = &"idle"
+script = ExtResource("2_player_visual")
 
 [node name="Experience_Area" type="Area2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Experience_Area"]
 shape = SubResource("CircleShape2D_gfjak")
-
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-libraries = {
-&"": SubResource("AnimationLibrary_tpg5x")
-}

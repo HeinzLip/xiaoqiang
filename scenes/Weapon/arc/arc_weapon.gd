@@ -3,8 +3,8 @@ class_name ArcWeapon extends Weapon
 const ARC_SEGMENTS := 40
 
 var _arc_radius := 210.0
-var _arc_damage_interval := 1.0
-var _arc_damage := 0.2
+var _arc_damage_interval := 0.5
+var _arc_damage := BalanceConfig.WEAPON_BASE["arc_damage"]
 var _arc_thickness := 26.0
 var _universal_damage_multiplier := 1.0
 var _universal_attack_rate_multiplier := 1.0
@@ -14,6 +14,8 @@ var _universal_attack_rate_multiplier := 1.0
 var _damage_timer: Timer
 var _collision_segments: Array[CollisionPolygon2D] = []
 var _last_damage_times: Dictionary = {}
+var _last_sfx_time := 0.0
+const ARC_SFX_INTERVAL := 0.25
 
 func _ready() -> void:
 	if attr_set == null:
@@ -38,10 +40,16 @@ func _add_attribute(attribute_key: String, value: float, callback: Callable) -> 
 	attr_set.attrs[attribute_key] = attribute
 
 func _deal_arc_damage() -> void:
+	var current_enemies: Dictionary = {}
 	for raw_area in arc_area.get_overlapping_areas():
 		var enemy := raw_area as Enemy
 		if enemy != null:
+			current_enemies[enemy.get_instance_id()] = true
 			_try_deal_arc_damage(enemy)
+	# 清理已不在电弧范围内的敌人记录, 防止 _last_damage_times 整局无限增长
+	for enemy_id in _last_damage_times.keys():
+		if not current_enemies.has(enemy_id):
+			_last_damage_times.erase(enemy_id)
 
 func _on_arc_area_entered(area: Area2D) -> void:
 	var enemy := area as Enemy
@@ -58,6 +66,10 @@ func _try_deal_arc_damage(enemy: Enemy) -> void:
 		return
 	_last_damage_times[enemy_id] = current_time
 	enemy.apply_damage(-_arc_damage)
+	var now := Time.get_ticks_msec() * 0.001
+	if now - _last_sfx_time >= ARC_SFX_INTERVAL:
+		_last_sfx_time = now
+		AudioManager.play_arc(-8.0)
 
 func _on_arc_radius_changed(value: float) -> void:
 	_arc_radius = maxf(value, 40.0)
@@ -70,7 +82,7 @@ func _on_arc_damage_interval_changed(value: float) -> void:
 func _on_arc_damage_changed(value: float) -> void:
 	_arc_damage = maxf(value, 0.0) * _universal_damage_multiplier
 
-func set_universal_modifiers(damage_multiplier: float, attack_rate_multiplier: float, _count_bonus: int) -> void:
+func set_universal_modifiers(damage_multiplier: float, attack_rate_multiplier: float) -> void:
 	_universal_damage_multiplier = maxf(damage_multiplier, 0.0)
 	_universal_attack_rate_multiplier = maxf(attack_rate_multiplier, 0.1)
 	var damage_attribute := attr_set.find_attr(AttributeEnum.instance.ARC_DAMAGE)

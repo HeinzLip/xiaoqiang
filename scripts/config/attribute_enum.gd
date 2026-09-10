@@ -57,6 +57,18 @@ var DART_NUMBER = "dart_number"
 var MAX_FLY_DISTANCE = "max_fly_distance"
 ## 飞镖的移动速度
 var MOVE_SPEED = "move_speed"
+## 飞镖伤害 (旋转阶段伤害)
+var DART_DAMAGE = "dart_damage"
+## 飞镖飞行时间
+var DART_FLY_TIME = "dart_fly_time"
+## 飞镖旋转时间
+var DART_SPIN_TIME = "dart_spin_time"
+## 飞镖爆炸伤害
+var DART_EXPLOSION_DAMAGE = "dart_explosion_damage"
+## 飞镖爆炸半径
+var DART_EXPLOSION_RADIUS = "dart_explosion_radius"
+## 飞镖体积
+var DART_SCALE = "dart_scale"
 
 ## 子弹射出的间隔
 var BULLET_FIRE_DELAY = "bullet_fire_delay"
@@ -89,3 +101,19 @@ var SOUND_WAVE_COUNT = "sound_wave_count"
 var SOUND_WAVE_SLOW = "sound_wave_slow"
 var SOUND_WAVE_PLAYER_SPEED = "sound_wave_player_speed"
 var SOUND_WAVE_REBOUND = "sound_wave_rebound"
+
+## 冰刺属性
+var ICE_SPIKE_DISTANCE = "ice_spike_distance"
+var ICE_SPIKE_WIDTH = "ice_spike_width"
+var ICE_SPIKE_DURATION = "ice_spike_duration"
+var ICE_SPIKE_DAMAGE_INTERVAL = "ice_spike_damage_interval"
+var ICE_SPIKE_SLOW = "ice_spike_slow"
+var ICE_SPIKE_COUNT = "ice_spike_count"
+
+## 落雷属性
+var LIGHTNING_FREQUENCY = "lightning_frequency"
+var LIGHTNING_RADIUS = "lightning_radius"
+var LIGHTNING_SHOCK_DURATION = "lightning_shock_duration"
+var LIGHTNING_SHOCK_CHANCE = "lightning_shock_chance"
+var LIGHTNING_SHOCK_DAMAGE = "lightning_shock_damage"
+var LIGHTNING_COUNT = "lightning_count"

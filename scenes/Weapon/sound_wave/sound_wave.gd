@@ -12,6 +12,7 @@ var _direction := 1.0
 var _remaining_rebounds := 0
 var _maximum_radius := 1100.0
 var _hit_enemy_ids: Dictionary = {}
+var _origin_locked := false
 
 func configure(damage: float, expand_speed: float, slow_ratio: float, rebound_count: int, start_delay: float) -> void:
 	set_damage(damage)
@@ -20,6 +21,7 @@ func configure(damage: float, expand_speed: float, slow_ratio: float, rebound_co
 	_remaining_rebounds = maxi(rebound_count, 0)
 	_radius = -_expand_speed * maxf(start_delay, 0.0)
 	_previous_radius = _radius
+	_origin_locked = false
 
 func set_damage(damage: float) -> void:
 	_damage = maxf(damage, 0.0)
@@ -27,19 +29,28 @@ func set_damage(damage: float) -> void:
 func _ready() -> void:
 	var viewport_size := get_viewport_rect().size
 	_maximum_radius = maxf(viewport_size.length() * 0.6, 720.0)
-	if is_instance_valid(Global.player):
-		global_position = Global.player.global_position
+	if _radius >= 0.0:
+		_lock_origin()
 
 func _process(delta: float) -> void:
-	if not is_instance_valid(Global.player):
-		queue_free()
-		return
-	global_position = Global.player.global_position
 	_previous_radius = _radius
 	_radius += _expand_speed * _direction * delta
+	if not _origin_locked and _radius >= 0.0:
+		if not _lock_origin():
+			return
 	_apply_wave_hits()
 	_update_wave_direction()
 	queue_redraw()
+
+## A delayed wave captures the player position only when it becomes visible.
+## Once captured, the wave is completely independent from player movement.
+func _lock_origin() -> bool:
+	if not is_instance_valid(Global.player):
+		queue_free()
+		return false
+	global_position = Global.player.global_position
+	_origin_locked = true
+	return true
 
 func _apply_wave_hits() -> void:
 	if _radius < 0.0:

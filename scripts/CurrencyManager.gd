@@ -5,10 +5,11 @@ signal banked_gold_changed(amount: int)
 
 const SAVE_PATH := "user://player_progress.cfg"
 
+## UI 元数据 (成本与每级数值在 BalanceConfig 单一数据源)
 const UPGRADE_INFO: Dictionary = {
-	"health": {"name": "体魄", "description": "生命上限 +20", "base_cost": 45, "cost_step": 30},
-	"speed": {"name": "迅捷", "description": "移动速度 +30", "base_cost": 40, "cost_step": 28},
-	"damage": {"name": "火力", "description": "所有武器伤害 +12%", "base_cost": 60, "cost_step": 40},
+	"health": {"name": "体魄", "description": "生命上限 +20"},
+	"speed": {"name": "迅捷", "description": "移动速度 +30"},
+	"damage": {"name": "火力", "description": "所有武器伤害 +12%"},
 }
 
 var banked_gold := 0
@@ -58,10 +59,10 @@ func get_upgrade_level(upgrade_key: String) -> int:
 	return int(_upgrade_levels.get(upgrade_key, 0))
 
 func get_upgrade_cost(upgrade_key: String) -> int:
-	var info: Dictionary = UPGRADE_INFO.get(upgrade_key, {})
-	if info.is_empty():
+	var cost_info: Dictionary = BalanceConfig.UPGRADE_COST.get(upgrade_key, {})
+	if cost_info.is_empty():
 		return 0
-	return int(info["base_cost"]) + get_upgrade_level(upgrade_key) * int(info["cost_step"])
+	return int(cost_info["base"]) + get_upgrade_level(upgrade_key) * int(cost_info["step"])
 
 func purchase_upgrade(upgrade_key: String) -> bool:
 	if not UPGRADE_INFO.has(upgrade_key):
@@ -76,13 +77,13 @@ func purchase_upgrade(upgrade_key: String) -> bool:
 	return true
 
 func get_max_health_bonus() -> float:
-	return float(get_upgrade_level("health") * 20)
+	return float(get_upgrade_level("health")) * BalanceConfig.HEALTH_PER_UPGRADE
 
 func get_move_speed_bonus() -> float:
-	return float(get_upgrade_level("speed") * 30)
+	return float(get_upgrade_level("speed")) * BalanceConfig.SPEED_PER_UPGRADE
 
 func get_damage_multiplier() -> float:
-	return 1.0 + float(get_upgrade_level("damage")) * 0.12
+	return 1.0 + float(get_upgrade_level("damage")) * BalanceConfig.PERM_DAMAGE_PER_LEVEL
 
 func _load_progress() -> void:
 	var config := ConfigFile.new()

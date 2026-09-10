@@ -2,6 +2,8 @@ class_name LevelSelect extends Control
 
 @onready var wallet_label: Label = $WalletLabel
 @onready var upgrade_button: Button = $UpgradeButton
+@onready var skill_lab_button: Button = $SkillLabButton
+@onready var enemy_trial_button: Button = $EnemyTrialButton
 @onready var upgrade_panel: Control = $UpgradePanel
 
 @onready var _level_titles: Array[Label] = [
@@ -35,6 +37,8 @@ class_name LevelSelect extends Control
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	upgrade_button.pressed.connect(_open_upgrade_panel)
+	skill_lab_button.pressed.connect(_open_skill_lab)
+	enemy_trial_button.pressed.connect(_open_enemy_trial)
 	CurrencyManager.banked_gold_changed.connect(_on_banked_gold_changed)
 	for level_index in range(_difficulty_buttons.size()):
 		for difficulty_index in range(_difficulty_buttons[level_index].size()):
@@ -45,6 +49,20 @@ func _ready() -> void:
 
 func _open_upgrade_panel() -> void:
 	upgrade_panel.show()
+
+func _open_skill_lab() -> void:
+	PlayerExperienceSystem.clear_by_player_dead()
+	CountManager.clear()
+	WeaponManager.reset_run()
+	get_tree().paused = false
+	get_tree().change_scene_to_file("res://UI/SkillLab.tscn")
+
+func _open_enemy_trial() -> void:
+	PlayerExperienceSystem.clear_by_player_dead()
+	CountManager.clear()
+	WeaponManager.reset_run()
+	get_tree().paused = false
+	get_tree().change_scene_to_file("res://UI/EnemyTrial.tscn")
 
 func _on_banked_gold_changed(amount: int) -> void:
 	wallet_label.text = "永久金币  %d" % amount

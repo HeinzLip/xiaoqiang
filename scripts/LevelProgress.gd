@@ -2,33 +2,44 @@ extends Node
 
 const SAVE_PATH := "user://level_progress.cfg"
 
+## Each wave owns its normal-enemy count, combat values, and visual resource.
+## `boss` uses the same keys with its own independent values.
 const LEVELS: Array[Dictionary] = [
 	{
 		"name": "第一关",
 		"description": "守住初始防线",
 		"spawn_interval": 0.66,
-		"enemy_multiplier": 0.72,
-		"growth_duration": 180.0,
-		"elite_interval": 30,
-		"elite_total": 3,
+		"waves": [
+			{"enemy_count": 30, "archetype": "tank", "health": BalanceConfig.ENEMY_HP_BY_LEVEL[0], "attack_damage": 6.0, "move_speed": 76.0, "resource": "res://assets/enemies/kulou_standard_sheet.png", "animation_columns": 10, "animation_rows": 5},
+			{"enemy_count": 30, "archetype": "fast", "health": BalanceConfig.ENEMY_HP_BY_LEVEL[0], "attack_damage": 8.0, "move_speed": 68.0, "resource": "res://assets/enemies/evil_bug_standard_sheet.png", "animation_columns": 10, "animation_rows": 4},
+			{"enemy_count": 30, "archetype": "ranged", "health": BalanceConfig.ENEMY_HP_BY_LEVEL[0], "attack_damage": 10.0, "move_speed": 84.0, "resource": "res://assets/enemies/kulou_standard_sheet.png", "animation_columns": 10, "animation_rows": 5},
+		],
+		"boss": {"health": BalanceConfig.BOSS_HP_BY_LEVEL[0], "attack_damage": 22.0, "move_speed": 48.0, "resource": "res://assets/enemies/sci_fi_monster_standard_sheet.png", "animation_columns": 10, "animation_rows": 4, "experience_reward": 360},
 	},
 	{
 		"name": "第二关",
 		"description": "穿越危险地带",
 		"spawn_interval": 0.58,
-		"enemy_multiplier": 0.92,
-		"growth_duration": 150.0,
-		"elite_interval": 25,
-		"elite_total": 4,
+		"waves": [
+			{"enemy_count": 25, "archetype": "tank", "health": BalanceConfig.ENEMY_HP_BY_LEVEL[1], "attack_damage": 8.0, "move_speed": 88.0, "resource": "res://assets/enemies/rotten_zombie_standard_sheet.png", "animation_columns": 10, "animation_rows": 4},
+			{"enemy_count": 25, "archetype": "fast", "health": BalanceConfig.ENEMY_HP_BY_LEVEL[1], "attack_damage": 10.0, "move_speed": 80.0, "resource": "res://assets/enemies/evil_bug_standard_sheet.png", "animation_columns": 10, "animation_rows": 4},
+			{"enemy_count": 25, "archetype": "ranged", "health": BalanceConfig.ENEMY_HP_BY_LEVEL[1], "attack_damage": 12.0, "move_speed": 94.0, "resource": "res://assets/enemies/alien_creature_standard_sheet.png", "animation_columns": 10, "animation_rows": 4},
+			{"enemy_count": 25, "archetype": "tank", "health": BalanceConfig.ENEMY_HP_BY_LEVEL[1], "attack_damage": 14.0, "move_speed": 86.0, "resource": "res://assets/enemies/evil_bug_standard_sheet.png", "animation_columns": 10, "animation_rows": 4},
+		],
+		"boss": {"health": BalanceConfig.BOSS_HP_BY_LEVEL[1], "attack_damage": 30.0, "move_speed": 54.0, "resource": "res://assets/enemies/sci_fi_monster_standard_sheet.png", "animation_columns": 10, "animation_rows": 4, "experience_reward": 420},
 	},
 	{
 		"name": "第三关",
 		"description": "完成最终防守",
 		"spawn_interval": 0.50,
-		"enemy_multiplier": 1.16,
-		"growth_duration": 125.0,
-		"elite_interval": 20,
-		"elite_total": 5,
+		"waves": [
+			{"enemy_count": 20, "archetype": "tank", "health": BalanceConfig.ENEMY_HP_BY_LEVEL[2], "attack_damage": 11.0, "move_speed": 100.0, "resource": "res://assets/enemies/rotten_zombie_standard_sheet.png", "animation_columns": 10, "animation_rows": 4},
+			{"enemy_count": 20, "archetype": "fast", "health": BalanceConfig.ENEMY_HP_BY_LEVEL[2], "attack_damage": 13.0, "move_speed": 92.0, "resource": "res://assets/enemies/evil_bug_standard_sheet.png", "animation_columns": 10, "animation_rows": 4},
+			{"enemy_count": 20, "archetype": "ranged", "health": BalanceConfig.ENEMY_HP_BY_LEVEL[2], "attack_damage": 16.0, "move_speed": 106.0, "resource": "res://assets/enemies/kulou_standard_sheet.png", "animation_columns": 10, "animation_rows": 5},
+			{"enemy_count": 20, "archetype": "tank", "health": BalanceConfig.ENEMY_HP_BY_LEVEL[2], "attack_damage": 18.0, "move_speed": 98.0, "resource": "res://assets/enemies/evil_bug_standard_sheet.png", "animation_columns": 10, "animation_rows": 4},
+			{"enemy_count": 20, "archetype": "fast", "health": BalanceConfig.ENEMY_HP_BY_LEVEL[2], "attack_damage": 21.0, "move_speed": 112.0, "resource": "res://assets/enemies/alien_creature_standard_sheet.png", "animation_columns": 10, "animation_rows": 4},
+		],
+		"boss": {"health": BalanceConfig.BOSS_HP_BY_LEVEL[2], "attack_damage": 38.0, "move_speed": 60.0, "resource": "res://assets/enemies/sci_fi_monster_standard_sheet.png", "animation_columns": 10, "animation_rows": 4, "experience_reward": 500},
 	},
 ]
 
@@ -56,8 +67,8 @@ func get_level_name(level_index: int) -> String:
 func get_level_description(level_index: int) -> String:
 	if not _is_valid_level(level_index):
 		return ""
-	var elite_total := int(LEVELS[level_index]["elite_total"])
-	return "%s · 击败 %d 名精英和最终Boss" % [LEVELS[level_index]["description"], elite_total]
+	var waves: Array = LEVELS[level_index].get("waves", [])
+	return "%s · 完成 %d 波并击败最终Boss" % [LEVELS[level_index]["description"], waves.size()]
 
 func get_difficulty_name(difficulty_index: int) -> String:
 	if not _is_valid_difficulty(difficulty_index):
@@ -96,7 +107,7 @@ func get_selected_level_config() -> Dictionary:
 		select_level(0, 0)
 	var config: Dictionary = LEVELS[selected_level_index].duplicate(true)
 	var difficulty: Dictionary = DIFFICULTIES[selected_difficulty_index]
-	config["enemy_multiplier"] = float(config["enemy_multiplier"]) * float(difficulty["enemy_multiplier"])
+	config["enemy_multiplier"] = float(difficulty["enemy_multiplier"])
 	config["spawn_interval"] = float(config["spawn_interval"]) / float(difficulty["spawn_interval_multiplier"])
 	return config
 

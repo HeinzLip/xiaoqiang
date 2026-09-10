@@ -81,6 +81,28 @@ grow_horizontal = 0
 theme_override_font_sizes/font_size = 19
 text = "角色强化"
 
+[node name="SkillLabButton" type="Button" parent="."]
+offset_left = -452.0
+offset_top = 24.0
+offset_right = -258.0
+offset_bottom = 70.0
+anchor_left = 1.0
+anchor_right = 1.0
+grow_horizontal = 0
+theme_override_font_sizes/font_size = 19
+text = "技能体验场"
+
+[node name="EnemyTrialButton" type="Button" parent="."]
+offset_left = -676.0
+offset_top = 24.0
+offset_right = -482.0
+offset_bottom = 70.0
+anchor_left = 1.0
+anchor_right = 1.0
+grow_horizontal = 0
+theme_override_font_sizes/font_size = 19
+text = "怪物试炼场"
+
 [node name="CenterPanel" type="PanelContainer" parent="."]
 layout_mode = 1
 anchors_preset = 8

@@ -3,14 +3,14 @@ extends Weapon
 var _bullet_fire_delay := 1.0
 var _bullet_fire_number := 3
 var _bullet_fire_angle := 24.0
-var _bullet_damage := 22.0
+var _bullet_damage := BalanceConfig.WEAPON_BASE["missile_damage"]
 var _bullet_move_speed := 900.0
 var _bullet_life_time := 1.5
 var _bullet_scale := 1.0
 var _bullet_penetrate_max_number := 0
+var _bullet_reflex_number := 0
 var _universal_damage_multiplier := 1.0
 var _universal_attack_rate_multiplier := 1.0
-var _universal_count_bonus := 0
 
 @onready var game_pool: GamePool = $MissileBulletPool
 var _fire_timer: Timer
@@ -37,6 +37,7 @@ func _init_attr() -> void:
 	_add_attribute(AttributeEnum.instance.BULLET_LIFE_TIME, _bullet_life_time, _on_bullet_life_time)
 	_add_attribute(AttributeEnum.instance.BULLET_SCALE, _bullet_scale, _on_bullet_scale)
 	_add_attribute(AttributeEnum.instance.BULLET_PENETRATE_MAX_NUMBER, _bullet_penetrate_max_number, _on_bullet_penetrate_max_number)
+	_add_attribute(AttributeEnum.instance.BULLET_REFLEX_NUMBER, _bullet_reflex_number, _on_bullet_reflex_number)
 
 func _create_timer() -> void:
 	_fire_timer = Timer.new()
@@ -48,21 +49,24 @@ func _create_timer() -> void:
 func _fire_missile_bullet() -> void:
 	if not is_instance_valid(Global.player):
 		return
-	var count := maxi(_bullet_fire_number + _universal_count_bonus, 1)
+	var count := maxi(_bullet_fire_number, 1)
 	var angle_step := _bullet_fire_angle / float(maxi(count - 1, 1))
 	var start_angle := -_bullet_fire_angle * 0.5
 	var aim_angle := _get_aim_direction().angle()
 	for index in range(count):
 		var bullet := game_pool.get_pool_object() as Missile
-		bullet.reparent(Global.weapont_system)
+		# 子弹挂到场景根, 使其世界坐标独立, 不随 WeaponSystem/玩家移动
+		var bullet_parent := get_tree().current_scene
+		if bullet.get_parent() != bullet_parent:
+			bullet.reparent(bullet_parent)
 		bullet.global_position = Global.player.global_position
 		bullet.global_rotation = aim_angle + (deg_to_rad(start_angle + angle_step * index) if count > 1 else 0.0)
 		bullet.init(attr_set, game_pool, _universal_damage_multiplier)
+	AudioManager.play_missile_fire(-6.0)
 
-func set_universal_modifiers(damage_multiplier: float, attack_rate_multiplier: float, count_bonus: int) -> void:
+func set_universal_modifiers(damage_multiplier: float, attack_rate_multiplier: float) -> void:
 	_universal_damage_multiplier = maxf(damage_multiplier, 0.0)
 	_universal_attack_rate_multiplier = maxf(attack_rate_multiplier, 0.1)
-	_universal_count_bonus = maxi(count_bonus, 0)
 	for raw_bullet in game_pool.get_active_objects():
 		var bullet := raw_bullet as Missile
 		if bullet != null:
@@ -98,3 +102,4 @@ func _on_bullet_move_speed(value: float) -> void: _bullet_move_speed = value
 func _on_bullet_life_time(value: float) -> void: _bullet_life_time = value
 func _on_bullet_scale(value: float) -> void: _bullet_scale = value
 func _on_bullet_penetrate_max_number(value: float) -> void: _bullet_penetrate_max_number = roundi(value)
+func _on_bullet_reflex_number(value: float) -> void: _bullet_reflex_number = maxi(roundi(value), 0)

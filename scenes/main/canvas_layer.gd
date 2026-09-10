@@ -28,7 +28,7 @@ func show_ui(type: UIType) -> void:
 	_show_ui()
 	visible = true
 
-func show_skill_choices(skills: Array[SkillPoint], title: String) -> void:
+func show_skill_choices(skills: Array[RewardOption], title: String) -> void:
 	show_ui(UIType.SKILL_UI)
 	var skill_choose := cur_ui_node as SkillChoose
 	if skill_choose != null:

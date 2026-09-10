@@ -13,19 +13,19 @@ func _init() -> void:
 		WeaponType.Missile_Weapon: preload("res://scenes/Weapon/missile/MissileBullet.tscn"),
 		WeaponType.Arc_Weapon: preload("res://scenes/Weapon/arc/ArcWeapon.tscn"),
 		WeaponType.Sound_Wave_Weapon: preload("res://scenes/Weapon/sound_wave/SoundWaveWeapon.tscn"),
+		WeaponType.Ice_Spike_Weapon: preload("res://scenes/Weapon/ice_spike/IceSpikeWeapon.tscn"),
+		WeaponType.Lightning_Weapon: preload("res://scenes/Weapon/lightning_strike/LightningStrikeWeapon.tscn"),
 	}
 	pass
 
 func _ready() -> void:
-	# Wait until the main scene has entered the tree before attaching the
-	# starter weapon to its WeaponSystem.
-	call_deferred("add_weapon", WeaponType.Missile_Weapon)
+	pass
 
 func get_weapon_list() -> Array[String]:
-	return _weapon_list
+	return SkillService.build_state.get_weapon_types()
 
 func get_new_skill_count() -> int:
-	return _weapon_list.size()
+	return SkillService.build_state.get_weapon_count()
 
 func can_learn_new_skill() -> bool:
 	return get_new_skill_count() < MAX_NEW_SKILLS
@@ -38,10 +38,12 @@ func get_available_weapon_list() -> Array[String]:
 
 func get_weapon_display_name(_weapon: String) -> String:
 	match _weapon:
-		WeaponType.Missile_Weapon: return "追踪导弹"
+		WeaponType.Missile_Weapon: return "子弹"
 		WeaponType.Dart_Weapon: return "回旋飞镖"
 		WeaponType.Arc_Weapon: return "电弧"
 		WeaponType.Sound_Wave_Weapon: return "声波"
+		WeaponType.Ice_Spike_Weapon: return "冰刺"
+		WeaponType.Lightning_Weapon: return "落雷"
 		_: return _weapon
 
 func has_weapon(_weapon: String) -> bool:
@@ -49,6 +51,13 @@ func has_weapon(_weapon: String) -> bool:
 
 func reset_run() -> void:
 	_weapon_list.clear()
+	SkillService.reset_run()
+
+func add_starter_weapon() -> bool:
+	if not add_weapon(WeaponType.Missile_Weapon):
+		return false
+	SkillService.register_starter_weapon(WeaponType.Missile_Weapon)
+	return true
 
 func add_weapon(_weapon: String) -> bool:
 	if has_weapon(_weapon) or not _weapon_map.has(_weapon) or not can_learn_new_skill():

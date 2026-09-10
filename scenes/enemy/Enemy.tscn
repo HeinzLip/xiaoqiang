@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://dwp5adymukxv3" path="res://scenes/enemy/enemy.gd" id="1_sjakr"]
 [ext_resource type="Shader" uid="uid://hknqcuyw4mnt" path="res://scenes/enemy/Enemy.gdshader" id="2_6l0n6"]
 [ext_resource type="Texture2D" path="res://icon.svg" id="2_vwhkw"]
+[ext_resource type="Texture2D" path="res://assets/effects/shock_balls.png" id="3_shock"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_vwhkw"]
 size = Vector2(114, 114)
@@ -40,8 +41,15 @@ position = Vector2(-2, -4)
 shape = SubResource("RectangleShape2D_vwhkw")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
+z_index = -1
 material = SubResource("ShaderMaterial_s6wwv")
 texture = ExtResource("2_vwhkw")
+
+[node name="ShockSprite" type="Sprite2D" parent="."]
+visible = false
+z_index = 1
+texture = ExtResource("3_shock")
+hframes = 4
 
 [node name="EliteHealthBar" type="ProgressBar" parent="."]
 visible = false

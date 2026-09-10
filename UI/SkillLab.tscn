@@ -1,0 +1,201 @@
+[gd_scene load_steps=7 format=3]
+
+[ext_resource type="Script" path="res://UI/skill_lab.gd" id="1_skill_lab"]
+[ext_resource type="Script" path="res://scripts/weaponsystem/WeaponSystem.gd" id="2_weapon_system"]
+[ext_resource type="PackedScene" path="res://scenes/player/Player.tscn" id="3_player"]
+[ext_resource type="Script" path="res://scenes/main/canvas_layer.gd" id="4_ui_panel"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxStatus"]
+bg_color = Color(0.025, 0.064, 0.11, 0.93)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.22, 0.69, 0.9, 0.9)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+content_margin_left = 18.0
+content_margin_top = 12.0
+content_margin_right = 18.0
+content_margin_bottom = 12.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxButton"]
+bg_color = Color(0.11, 0.34, 0.51, 0.96)
+corner_radius_top_left = 7
+corner_radius_top_right = 7
+corner_radius_bottom_right = 7
+corner_radius_bottom_left = 7
+
+[node name="SkillLab" type="Node2D"]
+script = ExtResource("1_skill_lab")
+
+[node name="WeaponSystem" type="Node2D" parent="."]
+script = ExtResource("2_weapon_system")
+
+[node name="Player" parent="." instance=ExtResource("3_player")]
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(0, 0)
+enabled = true
+
+[node name="UIPanel" type="CanvasLayer" parent="."]
+visible = false
+script = ExtResource("4_ui_panel")
+
+[node name="LabUI" type="CanvasLayer" parent="."]
+layer = 2
+
+[node name="Control" type="Control" parent="LabUI"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="StatusPanel" type="PanelContainer" parent="LabUI/Control"]
+offset_left = 24.0
+offset_top = 24.0
+offset_right = 730.0
+offset_bottom = 154.0
+theme_override_styles/panel = SubResource("StyleBoxStatus")
+mouse_filter = 2
+
+[node name="Content" type="VBoxContainer" parent="LabUI/Control/StatusPanel"]
+layout_mode = 2
+theme_override_constants/separation = 5
+
+[node name="TitleLabel" type="Label" parent="LabUI/Control/StatusPanel/Content"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.68, 0.92, 1, 1)
+theme_override_font_sizes/font_size = 27
+text = "技能体验场"
+
+[node name="SelectedSkillLabel" type="Label" parent="LabUI/Control/StatusPanel/Content"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.86, 0.48, 1)
+theme_override_font_sizes/font_size = 21
+text = "当前体验：子弹"
+
+[node name="StatusLabel" type="Label" parent="LabUI/Control/StatusPanel/Content"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.77, 0.9, 0.97, 1)
+theme_override_font_sizes/font_size = 17
+text = "选择技能后观察实际效果。"
+autowrap_mode = 2
+
+[node name="SkillButtons" type="HBoxContainer" parent="LabUI/Control"]
+offset_left = 24.0
+offset_top = -78.0
+offset_right = 1180.0
+offset_bottom = -24.0
+anchor_top = 1.0
+anchor_bottom = 1.0
+grow_vertical = 0
+theme_override_constants/separation = 10
+
+[node name="MissileButton" type="Button" parent="LabUI/Control/SkillButtons"]
+custom_minimum_size = Vector2(190, 54)
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+theme_override_styles/normal = SubResource("StyleBoxButton")
+text = "子弹"
+
+[node name="DartButton" type="Button" parent="LabUI/Control/SkillButtons"]
+custom_minimum_size = Vector2(190, 54)
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+theme_override_styles/normal = SubResource("StyleBoxButton")
+text = "回旋飞镖"
+
+[node name="ArcButton" type="Button" parent="LabUI/Control/SkillButtons"]
+custom_minimum_size = Vector2(190, 54)
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+theme_override_styles/normal = SubResource("StyleBoxButton")
+text = "电弧"
+
+[node name="SoundWaveButton" type="Button" parent="LabUI/Control/SkillButtons"]
+custom_minimum_size = Vector2(190, 54)
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+theme_override_styles/normal = SubResource("StyleBoxButton")
+text = "声波"
+
+[node name="IceSpikeButton" type="Button" parent="LabUI/Control/SkillButtons"]
+custom_minimum_size = Vector2(190, 54)
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+theme_override_styles/normal = SubResource("StyleBoxButton")
+text = "冰刺"
+
+[node name="LightningButton" type="Button" parent="LabUI/Control/SkillButtons"]
+custom_minimum_size = Vector2(190, 54)
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+theme_override_styles/normal = SubResource("StyleBoxButton")
+text = "落雷"
+
+[node name="UpgradePanel" type="PanelContainer" parent="LabUI/Control"]
+offset_left = -470.0
+offset_top = 88.0
+offset_right = -24.0
+offset_bottom = 420.0
+anchor_left = 1.0
+anchor_right = 1.0
+grow_horizontal = 0
+theme_override_styles/panel = SubResource("StyleBoxStatus")
+
+[node name="Content" type="VBoxContainer" parent="LabUI/Control/UpgradePanel"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="TitleLabel" type="Label" parent="LabUI/Control/UpgradePanel/Content"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.68, 0.92, 1, 1)
+theme_override_font_sizes/font_size = 22
+text = "专属强化（点击叠加）"
+
+[node name="UpgradeButtons" type="VBoxContainer" parent="LabUI/Control/UpgradePanel/Content"]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="ResetUpgradeButton" type="Button" parent="LabUI/Control/UpgradePanel/Content"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 44)
+theme_override_font_sizes/font_size = 18
+text = "重置强化（重新装配武器）"
+
+[node name="Actions" type="HBoxContainer" parent="LabUI/Control"]
+offset_left = -414.0
+offset_top = 30.0
+offset_right = -24.0
+offset_bottom = 78.0
+anchor_left = 1.0
+anchor_right = 1.0
+grow_horizontal = 0
+theme_override_constants/separation = 10
+
+[node name="RespawnButton" type="Button" parent="LabUI/Control/Actions"]
+custom_minimum_size = Vector2(190, 48)
+layout_mode = 2
+theme_override_font_sizes/font_size = 18
+text = "刷新练习靶"
+
+[node name="ReturnButton" type="Button" parent="LabUI/Control/Actions"]
+custom_minimum_size = Vector2(190, 48)
+layout_mode = 2
+theme_override_font_sizes/font_size = 18
+text = "返回关卡选择"
+
+[node name="HintLabel" type="Label" parent="LabUI/Control"]
+offset_left = 24.0
+offset_top = 170.0
+offset_right = 680.0
+offset_bottom = 200.0
+theme_override_colors/font_color = Color(0.67, 0.8, 0.9, 0.92)
+theme_override_font_sizes/font_size = 17
+text = "WASD 移动角色；练习靶不造成伤害。按 Esc 可返回。"

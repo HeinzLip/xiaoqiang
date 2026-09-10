@@ -66,7 +66,7 @@ func _find_scene_node(node_path: NodePath) -> Node:
         return null
     return current_scene.get_node_or_null(node_path)
 
-func show_skill_ui(skills: Array[SkillPoint] = [], title: String = "选择一项强化") -> void:
+func show_skill_ui(skills: Array[RewardOption] = [], title: String = "选择一项强化") -> void:
     if is_instance_valid(ui_panel):
         ui_panel.show_skill_choices(skills, title)
     
@@ -109,5 +109,8 @@ func reset_world() -> void:
 
 func return_to_level_select() -> void:
     CurrencyManager.finish_run()
+    PlayerExperienceSystem.clear_by_player_dead()
+    CountManager.clear()
+    WeaponManager.reset_run()
     get_tree().paused = false
     get_tree().change_scene_to_file("res://UI/LevelSelect.tscn")
